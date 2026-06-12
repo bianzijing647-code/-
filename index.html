@@ -745,10 +745,11 @@
 
     /* 第三板块 - 长安文化地图 */
     .map-section {
-      height: 100vh;
+      min-height: 100vh;
       background: #F5F1EA;
       position: relative;
       overflow: hidden;
+      padding: 60px 0;
     }
 
     /* 宣纸纹理效果 */
@@ -776,12 +777,13 @@
 
     /* 左侧信息面板 */
     .info-panel {
-      width: 55%;
+      width: 50%;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding-left: 100px;
-      max-width: 700px;
+      padding-left: 80px;
+      max-width: 650px;
+      flex-shrink: 0;
     }
 
     .scenic-image-wrapper {
@@ -836,11 +838,13 @@
 
     /* 右侧地图区域 */
     .map-panel {
-      width: 45%;
+      width: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
     }
 
     .map-vertical-title {
