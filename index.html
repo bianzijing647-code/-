@@ -773,6 +773,7 @@
       display: flex;
       position: relative;
       z-index: 1;
+      gap: 0;
     }
 
     /* 左侧信息面板 */
@@ -782,8 +783,11 @@
       flex-direction: column;
       justify-content: center;
       padding-left: 80px;
+      padding-right: 40px;
       max-width: 650px;
       flex-shrink: 0;
+      overflow: hidden;
+      box-sizing: border-box;
     }
 
     .scenic-image-wrapper {
@@ -845,6 +849,9 @@
       position: relative;
       flex-shrink: 0;
       overflow: hidden;
+      padding-left: 40px;
+      padding-right: 80px;
+      box-sizing: border-box;
     }
 
     .map-vertical-title {
