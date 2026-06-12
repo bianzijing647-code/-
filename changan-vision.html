@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>长安视界 - 长安序·XIAN</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-color: #F2EEE5;
+      --bg-secondary: #ECE5D8;
+      --text-primary: #5C4A28;
+      --text-secondary: #5F5A4D;
+      --text-muted: rgba(95, 90, 77, 0.75);
+      --gold: #97835C;
+      --green: #51561A;
+      --olive: #363D1E;
+      --card-shadow: 0 2px 12px rgba(92, 74, 40, 0.08);
+      --card-shadow-hover: 0 8px 24px rgba(151, 131, 92, 0.15);
+    }
+
+    body {
+      font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* 顶部返回导航 */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 32px;
+      background: rgba(242, 238, 229, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(92, 74, 40, 0.1);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover {
+      color: var(--gold);
+    }
+
+    .back-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* 顶部标题区 */
+    .hero-section {
+      padding: 120px 20px 60px;
+      text-align: center;
+      background: var(--bg-secondary);
+    }
+
+    .gallery-tag {
+      display: inline-block;
+      padding: 8px 20px;
+      background: rgba(151, 131, 92, 0.1);
+      color: var(--gold);
+      font-size: 13px;
+      letter-spacing: 2px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(151, 131, 92, 0.3);
+    }
+
+    .hero-title {
+      font-size: 24px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      max-width: 800px;
+      margin: 0 auto;
+      letter-spacing: 1px;
+      font-weight: 400;
+    }
+
+    /* 分类筛选栏 */
+    .filter-section {
+      padding: 0 20px 40px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: var(--bg-secondary);
+    }
+
+    .filter-tag {
+      padding: 10px 24px;
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--text-secondary);
+      border: 1px solid rgba(151, 131, 92, 0.3);
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .filter-tag:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .filter-tag.active {
+      background: var(--gold);
+      color: var(--bg-color);
+      border-color: var(--gold);
+    }
+
+    /* 瀑布流容器 */
+    .masonry-container {
+      column-count: 4;
+      column-gap: 20px;
+      padding: 0 20px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 1200px) {
+      .masonry-container {
+        column-count: 3;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .masonry-container {
+        column-count: 2;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .masonry-container {
+        column-count: 1;
+      }
+    }
+
+    /* 卡片样式 */
+    .masonry-card {
+      position: relative;
+      break-inside: avoid;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(151, 131, 92, 0.15);
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    /* 删除按钮 */
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      background: rgba(92, 74, 40, 0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .masonry-card:hover .delete-btn {
+      opacity: 1;
+    }
+
+    .delete-btn:hover {
+      background: rgba(166, 58, 58, 0.8);
+    }
+
+    .delete-btn svg {
+      width: 16px;
+      height: 16px;
+      color: #F2EEE5;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .masonry-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .card-image {
+      width: 100%;
+      display: block;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0.7);
+      transition: transform 0.3s ease;
+    }
+
+    .masonry-card:hover .card-image {
+      transform: scale(1.03);
+    }
+
+    /* 视频卡片 */
+    .card-video {
+      position: relative;
+    }
+
+    .video-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      background: rgba(151, 131, 92, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .masonry-card:hover .video-overlay {
+      transform: translate(-50%, -50%) scale(1.1);
+      background: #4A3B20;
+    }
+
+    .video-overlay svg {
+      width: 20px;
+      height: 20px;
+      color: #F2EEE5;
+      margin-left: 2px;
+    }
+
+    /* 卡片信息 */
+    .card-info {
+      padding: 16px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-category {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* 上传按钮 */
+    .upload-section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .upload-btn {
+      padding: 16px 48px;
+      background: transparent;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 15px;
+      letter-spacing: 2px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .upload-btn:hover {
+      background: rgba(151, 131, 92, 0.08);
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(151, 131, 92, 0.15);
+    }
+
+    .upload-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* 上传模态框 */
+    .upload-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(92, 74, 40, 0.5);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .upload-modal.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .upload-content {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .upload-header {
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(151, 131, 92, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .upload-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .upload-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(151, 131, 92, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .upload-close:hover {
+      background: rgba(151, 131, 92, 0.2);
+    }
+
+    .upload-close svg {
+      width: 16px;
+      height: 16px;
+      color: var(--text-secondary);
+    }
+
+    .upload-body {
+      padding: 24px 32px;
+    }
+
+    /* 上传区域 */
+    .upload-area {
+      border: 2px dashed rgba(151, 131, 92, 0.3);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 24px;
+    }
+
+    .upload-area:hover,
+    .upload-area.dragover {
+      border-color: var(--gold);
+      background: rgba(151, 131, 92, 0.08);
+    }
+
+    .upload-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: rgba(151, 131, 92, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-area:hover .upload-icon,
+    .upload-area.dragover .upload-icon {
+      background: var(--gold);
+    }
+
+    .upload-icon svg {
+      width: 28px;
+      height: 28px;
+      color: var(--text-muted);
+    }
+
+    .upload-area:hover .upload-icon svg,
+    .upload-area.dragover .upload-icon svg {
+      color: #F2EEE5;
+    }
+
+    .upload-text {
+      font-size: 16px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .upload-hint {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    #uploadInput {
+      display: none;
+    }
+
+    /* 表单字段 */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid rgba(151, 131, 92, 0.2);
+      border-radius: 10px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    /* 分类选择 */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .category-item {
+      padding: 14px 16px;
+      border: 1px solid rgba(151, 131, 92, 0.2);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .category-item:hover {
+      border-color: var(--gold);
+    }
+
+    .category-item.active {
+      background: rgba(151, 131, 92, 0.08);
+      border-color: var(--gold);
+    }
+
+    .category-item.active .category-title {
+      color: var(--gold);
+    }
+
+    .category-title {
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .category-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* 画幅选择 */
+    .aspect-options {
+      display: flex;
+      gap: 12px;
+    }
+
+    .aspect-item {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid rgba(151, 131, 92, 0.2);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .aspect-item:hover {
+      border-color: var(--gold);
+    }
+
+    .aspect-item.active {
+      background: rgba(151, 131, 92, 0.08);
+      border-color: var(--gold);
+    }
+
+    .aspect-item.active .aspect-label {
+      color: var(--gold);
+    }
+
+    .aspect-preview {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 8px;
+      border: 2px solid rgba(151, 131, 92, 0.2);
+      border-radius: 6px;
+    }
+
+    .aspect-item.active .aspect-preview {
+      border-color: var(--gold);
+    }
+
+    .aspect-preview.horizontal {
+      width: 50px;
+      height: 30px;
+    }
+
+    .aspect-preview.vertical {
+      width: 30px;
+      height: 50px;
+    }
+
+    .aspect-preview.square {
+      width: 40px;
+      height: 40px;
+    }
+
+    .aspect-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* 时长选择 */
+    .duration-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .duration-item {
+      padding: 10px 20px;
+      border: 1px solid rgba(151, 131, 92, 0.2);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 13px;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .duration-item:hover {
+      border-color: var(--gold);
+    }
+
+    .duration-item.active {
+      background: var(--gold);
+      color: #F2EEE5;
+      border-color: var(--gold);
+    }
+
+    /* 预览缩略图 */
+    .preview-section {
+      margin-bottom: 24px;
+    }
+
+    .preview-image {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    /* 提交按钮 */
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--text-primary);
+      color: #F2EEE5;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #4A3B20;
+    }
+
+    .submit-btn:disabled {
+      background: rgba(151, 131, 92, 0.3);
+      cursor: not-allowed;
+    }
+
+    /* 预览模态框 */
+    .preview-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(92, 74, 40, 0.9);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .preview-modal.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .preview-content {
+      max-width: 90vw;
+      max-height: 90vh;
+      position: relative;
+    }
+
+    .preview-image-full {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .preview-video {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 8px;
+    }
+
+    .preview-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      width: 36px;
+      height: 36px;
+      background: rgba(242, 238, 229, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .preview-close:hover {
+      background: rgba(242, 238, 229, 0.3);
+    }
+
+    .preview-close svg {
+      width: 20px;
+      height: 20px;
+      color: #F2EEE5;
+    }
+
+    .preview-info {
+      position: absolute;
+      bottom: -40px;
+      left: 0;
+      color: #F2EEE5;
+      font-size: 14px;
+    }
+
+    /* 成功提示 */
+    .success-message {
+      display: none;
+      padding: 20px;
+      background: rgba(151, 131, 92, 0.08);
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .success-message.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .success-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .success-icon svg {
+      width: 24px;
+      height: 24px;
+      color: #F2EEE5;
+    }
+
+    .success-text {
+      font-size: 16px;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* 页脚 */
+    .footer {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <nav class="top-nav">
+    <a href="index.html" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5"/>
+        <path d="M12 19l-7-7 7-7"/>
+      </svg>
+      返回首页
+    </a>
+  </nav>
+
+  <!-- 顶部标题区 -->
+  <section class="hero-section">
+    <span class="gallery-tag">GALLERY</span>
+    <h1 class="hero-title">
+      以镜头为笔，记录长安光影；从学生视角到城墙轮迹，
+      <br />
+      每一帧都是对古都最真诚的探访 —— 这里收藏着年轻目光里的西安。
+    </h1>
+  </section>
+
+  <!-- 分类筛选栏 -->
+  <section class="filter-section">
+    <div class="filter-tag active" data-category="all">全部内容</div>
+    <div class="filter-tag" data-category="vlog">游客 Vlog</div>
+    <div class="filter-tag" data-category="student">学生投稿</div>
+    <div class="filter-tag" data-category="photography">摄影作品</div>
+    <div class="filter-tag" data-category="night">夜景短片</div>
+    <div class="filter-tag" data-category="cycling">城墙骑行</div>
+  </section>
+
+  <!-- 瀑布流展示区 -->
+  <section class="masonry-container" id="masonryContainer">
+    <!-- 内容将通过JS动态生成 -->
+  </section>
+
+  <!-- 上传按钮 -->
+  <section class="upload-section">
+    <button class="upload-btn" id="uploadBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      上传你眼中的长安
+    </button>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <p>长安序 · XIAN | 长安视界</p>
+  </footer>
+
+  <!-- 上传模态框 -->
+  <div class="upload-modal" id="uploadModal">
+    <div class="upload-content">
+      <div class="upload-header">
+        <span class="upload-title">上传作品</span>
+        <div class="upload-close" id="uploadClose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </div>
+      </div>
+      <div class="upload-body">
+        <!-- 成功提示 -->
+        <div class="success-message" id="successMessage">
+          <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div class="success-text">上传成功！感谢你的分享</div>
+        </div>
+
+        <!-- 上传区域 -->
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div class="upload-text">点击或拖拽文件到此处上传</div>
+          <div class="upload-hint">支持 JPG、PNG、MP4 等格式，单个文件不超过 50MB</div>
+        </div>
+        <input type="file" id="uploadInput" accept="image/*,video/*">
+
+        <!-- 预览 -->
+        <div class="preview-section" id="previewSection" style="display: none;">
+          <img id="previewImg" class="preview-image" src="" alt="">
+        </div>
+
+        <!-- 标题输入 -->
+        <div class="form-group">
+          <label class="form-label">作品标题</label>
+          <input type="text" class="form-input" id="titleInput" placeholder="例如：城墙骑行 vlog、大唐不夜城夜游">
+        </div>
+
+        <!-- 分类选择 -->
+        <div class="form-group">
+          <label class="form-label">选择分类</label>
+          <div class="category-grid">
+            <div class="category-item" data-type="vlog">
+              <div class="category-title">游客 Vlog</div>
+              <div class="category-desc">城墙骑行、夜游等</div>
+            </div>
+            <div class="category-item" data-type="student">
+              <div class="category-title">学生投稿</div>
+              <div class="category-desc">街景、校园融合</div>
+            </div>
+            <div class="category-item" data-type="photography">
+              <div class="category-title">摄影作品</div>
+              <div class="category-desc">风光、人像等</div>
+            </div>
+            <div class="category-item" data-type="night">
+              <div class="category-title">夜景短片</div>
+              <div class="category-desc">灯光秀、夜景延时</div>
+            </div>
+            <div class="category-item" data-type="cycling">
+              <div class="category-title">城墙骑行</div>
+              <div class="category-desc">日出、日落骑行</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 画幅选择 -->
+        <div class="form-group">
+          <label class="form-label">画幅选择</label>
+          <div class="aspect-options">
+            <div class="aspect-item" data-aspect="horizontal">
+              <div class="aspect-preview horizontal"></div>
+              <div class="aspect-label">横版</div>
+            </div>
+            <div class="aspect-item" data-aspect="vertical">
+              <div class="aspect-preview vertical"></div>
+              <div class="aspect-label">竖版</div>
+            </div>
+            <div class="aspect-item active" data-aspect="square">
+              <div class="aspect-preview square"></div>
+              <div class="aspect-label">方形</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 时长选择（仅视频） -->
+        <div class="form-group" id="durationGroup" style="display: none;">
+          <label class="form-label">视频时长</label>
+          <div class="duration-options">
+            <div class="duration-item" data-duration="short">1分钟以内</div>
+            <div class="duration-item active" data-duration="medium">1-5分钟</div>
+            <div class="duration-item" data-duration="long">5-15分钟</div>
+            <div class="duration-item" data-duration="extra">15分钟以上</div>
+          </div>
+        </div>
+
+        <!-- 提交按钮 -->
+        <button class="submit-btn" id="submitBtn" disabled>确认上传</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 预览模态框 -->
+  <div class="preview-modal" id="previewModal">
+    <div class="preview-content">
+      <div class="preview-close" id="previewCloseBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </div>
+      <div class="preview-info" id="previewInfo"></div>
+    </div>
+  </div>
+
+  <script>
+    // 模拟数据
+    const galleryData = [
+      { id: 1, type: 'photography', title: '秦岭日出', category: '摄影作品', image: 'https://picsum.photos/400/600?random=1', isVideo: false },
+      { id: 2, type: 'photography', title: '华山云海', category: '摄影作品', image: 'https://picsum.photos/400/500?random=2', isVideo: false },
+      { id: 3, type: 'photography', title: '浐灞湿地', category: '摄影作品', image: 'https://picsum.photos/400/400?random=3', isVideo: false },
+      { id: 4, type: 'photography', title: '大雁塔晨光', category: '摄影作品', image: 'https://picsum.photos/400/650?random=4', isVideo: false },
+      { id: 5, type: 'photography', title: '兵马俑阵列', category: '摄影作品', image: 'https://picsum.photos/400/550?random=5', isVideo: false },
+      { id: 6, type: 'vlog', title: '城墙骑行 vlog', category: '游客 Vlog', image: 'https://picsum.photos/400/450?random=6', isVideo: true },
+      { id: 7, type: 'vlog', title: '大唐不夜城夜游', category: '游客 Vlog', image: 'https://picsum.photos/400/550?random=7', isVideo: true },
+      { id: 8, type: 'vlog', title: '回民街美食探索', category: '游客 Vlog', image: 'https://picsum.photos/400/400?random=8', isVideo: true },
+      { id: 9, type: 'student', title: '校园与古都的对话', category: '学生投稿', image: 'https://picsum.photos/400/500?random=9', isVideo: false },
+      { id: 10, type: 'student', title: '西安街景随拍', category: '学生投稿', image: 'https://picsum.photos/400/600?random=10', isVideo: false },
+      { id: 11, type: 'student', title: '晨读城墙下', category: '学生投稿', image: 'https://picsum.photos/400/450?random=11', isVideo: false },
+      { id: 12, type: 'night', title: '大唐不夜城灯光秀', category: '夜景短片', image: 'https://picsum.photos/400/550?random=12', isVideo: true },
+      { id: 13, type: 'night', title: '钟鼓楼夜景', category: '夜景短片', image: 'https://picsum.photos/400/600?random=13', isVideo: false },
+      { id: 14, type: 'night', title: '城墙夜景延时', category: '夜景短片', image: 'https://picsum.photos/400/450?random=14', isVideo: true },
+      { id: 15, type: 'cycling', title: '城墙日出骑行', category: '城墙骑行', image: 'https://picsum.photos/400/500?random=15', isVideo: true },
+      { id: 16, type: 'cycling', title: '日落骑行记录', category: '城墙骑行', image: 'https://picsum.photos/400/400?random=16', isVideo: false },
+      { id: 17, type: 'cycling', title: '骑行路线风光', category: '城墙骑行', image: 'https://picsum.photos/400/550?random=17', isVideo: true },
+    ];
+
+    // DOM元素
+    const masonryContainer = document.getElementById('masonryContainer');
+    const filterTags = document.querySelectorAll('.filter-tag');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const uploadModal = document.getElementById('uploadModal');
+    const uploadClose = document.getElementById('uploadClose');
+    const uploadArea = document.getElementById('uploadArea');
+    const uploadInput = document.getElementById('uploadInput');
+    const previewSection = document.getElementById('previewSection');
+    const previewImg = document.getElementById('previewImg');
+    const titleInput = document.getElementById('titleInput');
+    const categoryItems = document.querySelectorAll('.category-item');
+    const aspectItems = document.querySelectorAll('.aspect-item');
+    const durationGroup = document.getElementById('durationGroup');
+    const durationItems = document.querySelectorAll('.duration-item');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMessage = document.getElementById('successMessage');
+    const previewModal = document.getElementById('previewModal');
+    const previewCloseBtn = document.getElementById('previewCloseBtn');
+
+    // 状态
+    let activeCategory = 'all';
+    let selectedType = '';
+    let selectedAspect = 'square';
+    let selectedDuration = 'medium';
+    let selectedFile = null;
+
+    // 渲染卡片
+    function renderCards(items, animate = true) {
+      masonryContainer.innerHTML = '';
+      let delay = 0;
+      
+      items.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'masonry-card';
+        card.dataset.id = item.id;
+        card.dataset.type = item.type;
+        
+        if (animate) {
+          card.style.animationDelay = `${delay}ms`;
+          delay += 80;
+        } else {
+          card.style.opacity = '1';
+          card.style.animation = 'none';
+        }
+
+        if (item.isVideo) {
+          card.innerHTML = `
+            <div class="delete-btn" data-id="${item.id}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </div>
+            <div class="card-video">
+              <img src="${item.image}" alt="${item.title}" class="card-image">
+              <div class="video-overlay">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="card-info">
+              <div class="card-title">${item.title}</div>
+              <div class="card-category">${item.category}</div>
+            </div>
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="delete-btn" data-id="${item.id}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </div>
+            <img src="${item.image}" alt="${item.title}" class="card-image">
+            <div class="card-info">
+              <div class="card-title">${item.title}</div>
+              <div class="card-category">${item.category}</div>
+            </div>
+          `;
+        }
+
+        // 删除按钮事件
+        const deleteBtn = card.querySelector('.delete-btn');
+        deleteBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteCard(item.id);
+        });
+
+        // 卡片点击预览
+        card.addEventListener('click', () => openPreview(item));
+        masonryContainer.appendChild(card);
+      });
+    }
+
+    // 删除卡片
+    function deleteCard(id) {
+      const index = galleryData.findIndex(item => item.id === id);
+      if (index !== -1) {
+        galleryData.splice(index, 1);
+        filterContent(activeCategory);
+      }
+    }
+
+    // 获取随机高度
+    function getRandomHeight() {
+      const heights = [300, 350, 400, 450, 500, 550, 600];
+      return heights[Math.floor(Math.random() * heights.length)];
+    }
+
+    // 筛选内容
+    function filterContent(category) {
+      activeCategory = category;
+      
+      filterTags.forEach(tag => {
+        tag.classList.remove('active');
+        if (tag.dataset.category === category) {
+          tag.classList.add('active');
+        }
+      });
+
+      const filteredData = category === 'all' 
+        ? galleryData 
+        : galleryData.filter(item => item.type === category);
+
+      renderCards(filteredData);
+    }
+
+    // 打开上传模态框
+    function openUploadModal() {
+      uploadModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // 关闭上传模态框
+    function closeUploadModal() {
+      uploadModal.classList.remove('active');
+      document.body.style.overflow = '';
+      resetUploadForm();
+    }
+
+    // 重置表单
+    function resetUploadForm() {
+      uploadInput.value = '';
+      previewSection.style.display = 'none';
+      previewImg.src = '';
+      titleInput.value = '';
+      selectedType = '';
+      selectedAspect = 'square';
+      selectedDuration = 'medium';
+      selectedFile = null;
+      
+      categoryItems.forEach(item => item.classList.remove('active'));
+      aspectItems.forEach(item => item.classList.remove('active'));
+      document.querySelector('.aspect-item[data-aspect="square"]').classList.add('active');
+      durationItems.forEach(item => item.classList.remove('active'));
+      document.querySelector('.duration-item[data-duration="medium"]').classList.add('active');
+      durationGroup.style.display = 'none';
+      submitBtn.disabled = true;
+      successMessage.classList.remove('active');
+    }
+
+    // 处理文件上传
+    function handleFileSelect(e) {
+      const file = e.target.files[0];
+      if (file) {
+        processFile(file);
+      }
+    }
+
+    // 拖拽上传
+    function handleDragOver(e) {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    }
+
+    function handleDragLeave() {
+      uploadArea.classList.remove('dragover');
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        processFile(file);
+      }
+    }
+
+    // 处理文件
+    function processFile(file) {
+      selectedFile = file;
+      
+      // 检查是否是视频
+      const isVideo = file.type.startsWith('video/');
+      
+      // 显示时长选择（仅视频）
+      durationGroup.style.display = isVideo ? 'block' : 'none';
+
+      // 显示预览
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImg.src = e.target.result;
+        previewSection.style.display = 'block';
+        validateForm();
+      };
+
+      if (isVideo) {
+        // 视频文件，创建缩略图
+        const video = document.createElement('video');
+        video.preload = 'metadata';
+        video.src = URL.createObjectURL(file);
+        video.onloadedmetadata = function() {
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          previewImg.src = canvas.toDataURL('image/jpeg');
+          previewSection.style.display = 'block';
+          URL.revokeObjectURL(video.src);
+          validateForm();
+        };
+      } else {
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // 选择分类
+    function selectCategory(type) {
+      selectedType = type;
+      categoryItems.forEach(item => item.classList.remove('active'));
+      document.querySelector(`.category-item[data-type="${type}"]`).classList.add('active');
+      validateForm();
+    }
+
+    // 选择画幅
+    function selectAspect(aspect) {
+      selectedAspect = aspect;
+      aspectItems.forEach(item => item.classList.remove('active'));
+      document.querySelector(`.aspect-item[data-aspect="${aspect}"]`).classList.add('active');
+    }
+
+    // 选择时长
+    function selectDuration(duration) {
+      selectedDuration = duration;
+      durationItems.forEach(item => item.classList.remove('active'));
+      document.querySelector(`.duration-item[data-duration="${duration}"]`).classList.add('active');
+    }
+
+    // 验证表单
+    function validateForm() {
+      const hasFile = selectedFile !== null;
+      const hasTitle = titleInput.value.trim() !== '';
+      const hasCategory = selectedType !== '';
+      
+      submitBtn.disabled = !(hasFile && hasTitle && hasCategory);
+    }
+
+    // 提交上传
+    function submitUpload() {
+      // 创建新卡片数据
+      const categoryMap = {
+        'vlog': '游客 Vlog',
+        'student': '学生投稿',
+        'photography': '摄影作品',
+        'night': '夜景短片',
+        'cycling': '城墙骑行'
+      };
+
+      const newItem = {
+        id: Date.now(),
+        type: selectedType,
+        title: titleInput.value.trim(),
+        category: categoryMap[selectedType],
+        image: previewImg.src,
+        isVideo: selectedFile.type.startsWith('video/')
+      };
+
+      // 添加到数据
+      galleryData.unshift(newItem);
+
+      // 刷新瀑布流
+      filterContent(activeCategory);
+
+      // 显示成功消息
+      successMessage.classList.add('active');
+      submitBtn.disabled = true;
+
+      // 3秒后重置表单
+      setTimeout(() => {
+        resetUploadForm();
+      }, 3000);
+    }
+
+    // 打开预览
+    function openPreview(item) {
+      const previewContent = previewModal.querySelector('.preview-content');
+      previewContent.innerHTML = `
+        <div class="preview-close" id="previewCloseBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </div>
+        ${item.isVideo ? 
+          `<video class="preview-video" controls autoplay muted>
+            <source src="${item.image}" type="video/mp4">
+          </video>` : 
+          `<img src="${item.image}" alt="${item.title}" class="preview-image-full">`
+        }
+        <div class="preview-info">${item.title} - ${item.category}</div>
+      `;
+      
+      previewModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('previewCloseBtn').addEventListener('click', closePreview);
+    }
+
+    // 关闭预览
+    function closePreview() {
+      previewModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // 初始化
+    function init() {
+      // 渲染初始内容
+      renderCards(galleryData);
+
+      // 绑定筛选事件
+      filterTags.forEach(tag => {
+        tag.addEventListener('click', () => filterContent(tag.dataset.category));
+      });
+
+      // 上传按钮事件
+      uploadBtn.addEventListener('click', openUploadModal);
+      uploadClose.addEventListener('click', closeUploadModal);
+
+      // 文件上传事件
+      uploadArea.addEventListener('click', () => uploadInput.click());
+      uploadInput.addEventListener('change', handleFileSelect);
+      uploadArea.addEventListener('dragover', handleDragOver);
+      uploadArea.addEventListener('dragleave', handleDragLeave);
+      uploadArea.addEventListener('drop', handleDrop);
+
+      // 表单事件
+      titleInput.addEventListener('input', validateForm);
+      
+      categoryItems.forEach(item => {
+        item.addEventListener('click', () => selectCategory(item.dataset.type));
+      });
+
+      aspectItems.forEach(item => {
+        item.addEventListener('click', () => selectAspect(item.dataset.aspect));
+      });
+
+      durationItems.forEach(item => {
+        item.addEventListener('click', () => selectDuration(item.dataset.duration));
+      });
+
+      submitBtn.addEventListener('click', submitUpload);
+
+      // 预览模态框
+      previewModal.addEventListener('click', (e) => {
+        if (e.target === previewModal) {
+          closePreview();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (uploadModal.classList.contains('active')) {
+            closeUploadModal();
+          } else if (previewModal.classList.contains('active')) {
+            closePreview();
+          }
+        }
+      });
+    }
+
+    // 启动
+    init();
+  </script>
+</body>
+</html>

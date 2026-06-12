@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>长安序·XIAN</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0F261F;
+      --bg-secondary: #F5F0E5;
+      --gold: #D6B15A;
+      --red: #A63A3A;
+      --text-primary: #2D241C;
+      --text-secondary: #6B5B50;
+      --text-muted: #9a8b7d;
+      --overlay-color: rgba(245, 240, 230, 0.5);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Noto Serif SC', 'SimSun', 'Songti SC', serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .hero-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(180deg, #7A2E1E 0%, #5C2318 50%, #3D1810 100%);
+    }
+
+    /* 顶部信息栏 */
+    nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 64px;
+      z-index: 100;
+      background: linear-gradient(180deg, rgba(44, 24, 16, 0.9) 0%, rgba(44, 24, 16, 0.4) 100%);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .logo-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #E8DCC8;
+    }
+
+    .logo-text .separator {
+      margin: 0 4px;
+      color: #C9A962;
+    }
+
+    .logo-text .city {
+      color: #C9A962;
+      font-weight: 500;
+    }
+
+    /* 顶部中间标题 */
+    .nav-title {
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: #E8DCC8;
+    }
+
+    .nav-title .title-gold {
+      color: #C9A962;
+    }
+
+    /* 顶部右侧描述 */
+    .nav-desc {
+      font-size: 13px;
+      color: rgba(232, 220, 200, 0.7);
+      letter-spacing: 1px;
+    }
+
+    /* 顶部导航链接 */
+    .nav-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(232, 220, 200, 0.8);
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: #C9A962;
+    }
+
+    /* 右侧悬浮导航 - 6个独立按钮 */
+    .side-nav {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 680px;
+      display: flex;
+      flex-direction: column;
+      z-index: 9999;
+      background: rgba(20, 24, 30, 0.95);
+    }
+
+    /* 每个导航按钮 */
+    .nav-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      position: relative;
+      text-decoration: none;
+      overflow: hidden;
+      width: 30px;
+      min-width: 30px;
+    }
+
+    /* 按钮1 - 深蓝色 */
+    .nav-btn:nth-child(1) {
+      background: #1E3A5F;
+    }
+    .nav-btn:nth-child(1):hover {
+      background: #1E3A5F;
+      width: 90px;
+      margin-left: -60px;
+    }
+
+    /* 按钮2 - 酒红色 */
+    .nav-btn:nth-child(2) {
+      background: #8B3A3A;
+    }
+    .nav-btn:nth-child(2):hover {
+      background: #8B3A3A;
+      width: 90px;
+      margin-left: -60px;
+    }
+
+    /* 按钮3 - 深绿色 */
+    .nav-btn:nth-child(3) {
+      background: #2D5A3D;
+    }
+    .nav-btn:nth-child(3):hover {
+      background: #2D5A3D;
+      width: 90px;
+      margin-left: -60px;
+    }
+
+    /* 按钮4 - 棕色 */
+    .nav-btn:nth-child(4) {
+      background: #5D4037;
+    }
+    .nav-btn:nth-child(4):hover {
+      background: #5D4037;
+      width: 90px;
+      margin-left: -60px;
+    }
+
+    /* 按钮5 - 深灰色 */
+    .nav-btn:nth-child(5) {
+      background: #2D2D2D;
+    }
+    .nav-btn:nth-child(5):hover {
+      background: #2D2D2D;
+      width: 90px;
+      margin-left: -60px;
+    }
+
+    /* 按钮6 - 墨绿色 */
+    .nav-btn:nth-child(6) {
+      background: #1E4A3A;
+    }
+    .nav-btn:nth-child(6):hover {
+      background: #1E4A3A;
+      width: 90px;
+      margin-left: -60px;
+    }
+
+    /* 当前页面高亮 - 不展开，只显示金色文字 */
+    .nav-btn.active {
+      box-shadow: inset 0 0 15px rgba(201, 169, 98, 0.2);
+    }
+
+    .nav-btn-text {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: #E8DCC8;
+      text-align: center;
+      transition: color 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(15px);
+    }
+
+    .nav-btn:hover .nav-btn-text,
+    .nav-btn.active .nav-btn-text {
+      opacity: 1;
+      visibility: visible;
+      color: #C9A962;
+      transform: translateX(0);
+    }
+
+    /* Hero 区域主体 - 三栏布局 */
+    .hero-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: stretch;
+    }
+
+    /* 左侧 - 历史章节导航 */
+    .chapter-nav {
+      width: 180px;
+      padding: 120px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 20;
+      background: linear-gradient(90deg, rgba(26, 15, 10, 0.9) 0%, rgba(26, 15, 10, 0.5) 100%);
+    }
+
+    .chapter-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .chapter-item {
+      position: relative;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .chapter-item:hover {
+      background: rgba(201, 169, 98, 0.1);
+    }
+
+    .chapter-item.active {
+      background: rgba(201, 169, 98, 0.15);
+    }
+
+    .chapter-dot {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(201, 169, 98, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .chapter-item:hover .chapter-dot,
+    .chapter-item.active .chapter-dot {
+      background: #C9A962;
+      box-shadow: 0 0 10px rgba(201, 169, 98, 0.5);
+    }
+
+    .chapter-line {
+      position: absolute;
+      left: 5px;
+      top: calc(50% + 8px);
+      width: 2px;
+      height: calc(100% + 8px);
+      background: linear-gradient(180deg, rgba(201, 169, 98, 0.3) 0%, rgba(201, 169, 98, 0.1) 100%);
+    }
+
+    .chapter-item:last-child .chapter-line {
+      display: none;
+    }
+
+    .chapter-info {
+      padding-left: 24px;
+    }
+
+    .chapter-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: #E8DCC8;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+
+    .chapter-item:hover .chapter-title,
+    .chapter-item.active .chapter-title {
+      color: #C9A962;
+    }
+
+    .chapter-period {
+      font-size: 11px;
+      color: rgba(232, 220, 200, 0.5);
+      letter-spacing: 0.5px;
+    }
+
+    /* 中间 - 主标题区域 */
+    .content-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 120px 40px 60px;
+      z-index: 10;
+      text-align: center;
+    }
+
+    /* 主标题 */
+    .main-title {
+      font-size: 120px;
+      font-weight: 700;
+      line-height: 1;
+      color: #E8DCC8;
+      letter-spacing: 20px;
+      margin-bottom: 16px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .main-title-en {
+      font-size: 32px;
+      font-weight: 300;
+      color: rgba(201, 169, 98, 0.8);
+      letter-spacing: 12px;
+      margin-bottom: 32px;
+      text-transform: uppercase;
+    }
+
+    /* 副标题 */
+    .sub-title {
+      font-size: 18px;
+      line-height: 1.8;
+      color: rgba(232, 220, 200, 0.75);
+      letter-spacing: 4px;
+      margin-bottom: 64px;
+    }
+
+    /* 数据展示 */
+    .stats-container {
+      display: flex;
+      gap: 80px;
+      margin-bottom: 64px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 48px;
+      font-weight: 700;
+      color: #C9A962;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: rgba(232, 220, 200, 0.6);
+      letter-spacing: 2px;
+    }
+
+    /* 探索按钮 */
+    .explore-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 48px;
+      background: rgba(201, 169, 98, 0.15);
+      border: 1px solid rgba(201, 169, 98, 0.4);
+      color: #C9A962;
+      text-decoration: none;
+      font-size: 15px;
+      letter-spacing: 3px;
+      border-radius: 40px;
+      transition: all 0.4s ease;
+    }
+
+    .explore-btn:hover {
+      background: rgba(201, 169, 98, 0.25);
+      border-color: #C9A962;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(201, 169, 98, 0.2);
+    }
+
+    /* 右侧 - 视觉展示区 */
+    .content-right {
+      width: 40%;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* 背景图 */
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.6s ease;
+    }
+
+    .hero-bg img.fade-out {
+      opacity: 0;
+    }
+
+    /* 渐变遮罩 */
+    .bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(26, 15, 10, 0.7) 0%,
+        rgba(26, 15, 10, 0.3) 50%,
+        rgba(26, 15, 10, 0.1) 100%
+      );
+      z-index: 2;
+    }
+
+    /* 当前章节简介 */
+    .chapter-intro {
+      position: absolute;
+      bottom: 60px;
+      left: 40px;
+      right: 40px;
+      z-index: 10;
+      padding: 24px;
+      background: rgba(26, 15, 10, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      border: 1px solid rgba(201, 169, 98, 0.2);
+      transition: all 0.4s ease;
+    }
+
+    .chapter-intro-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #C9A962;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .chapter-intro-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(232, 220, 200, 0.8);
+    }
+
+    /* 底部装饰线 */
+    .hero-footer {
+      position: absolute;
+      bottom: 30px;
+      left: 200px;
+      right: 500px;
+      z-index: 10;
+    }
+
+    .footer-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201, 169, 98, 0.5), transparent);
+      margin-bottom: 16px;
+    }
+
+    .footer-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: rgba(232, 220, 200, 0.6);
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    /* 向下滚动指示 */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 30px;
+      right: 64px;
+      z-index: 10;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .scroll-indicator svg {
+      width: 24px;
+      height: 24px;
+      color: #C9A962;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(10px);
+      }
+    }
+
+    /* 第二板块 - 走进长安 */
+    .explore-section {
+      min-height: 100vh;
+      background: var(--bg-secondary);
+      padding: 80px 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .explore-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><path d="M100,200 Q200,150 300,200 T500,200 T700,200" fill="none" stroke="%23D6B15A" stroke-width="1" opacity="0.1"/></svg>');
+      background-size: cover;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .explore-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .explore-header {
+      text-align: center;
+      margin: 120px 0 80px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .explore-title {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 8px;
+      margin-bottom: 32px;
+    }
+
+    .explore-title span {
+      color: var(--gold);
+    }
+
+    .explore-desc {
+      font-size: 18px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* 数据统计区域 */
+    .stats-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 100px;
+      padding: 60px 0;
+    }
+
+    .stat-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 30px;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      transition: all 0.3s ease;
+      text-align: center;
+      width: auto;
+    }
+
+    .stat-value {
+      font-family: 'Noto Serif SC', 'SimSun', 'Songti SC', serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: #D5B280;
+      line-height: 1;
+      margin-bottom: 16px;
+      transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover .stat-value {
+      transform: translateY(-3px);
+    }
+
+    .stat-divider {
+      width: 40px;
+      height: 2px;
+      background: rgba(213, 178, 128, 0.8);
+      margin-bottom: 16px;
+    }
+
+    .stat-label {
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      color: #868166;
+      line-height: 1.5;
+    }
+
+    /* 响应式 */
+    @media (max-width: 1200px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .explore-section {
+        padding: 80px 20px;
+      }
+
+      .explore-title {
+        font-size: 36px;
+        letter-spacing: 4px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    /* 响应式 */
+    @media (max-width: 1200px) {
+      nav {
+        padding: 24px 40px;
+      }
+
+      .nav-links {
+        gap: 24px;
+      }
+
+      .content-left {
+        padding: 0 60px;
+        width: 50%;
+      }
+
+      .main-title {
+        font-size: 56px;
+        letter-spacing: 4px;
+      }
+
+      .sub-title {
+        font-size: 16px;
+        max-width: 400px;
+      }
+
+      .hero-footer {
+        left: 60px;
+        right: 60px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .content-left {
+        width: 100%;
+        padding: 0 40px;
+        text-align: center;
+      }
+
+      .content-right {
+        display: none;
+      }
+
+      .main-title {
+        font-size: 44px;
+        letter-spacing: 2px;
+      }
+
+      .sub-title {
+        margin: 0 auto 48px;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* 第三板块 - 长安文化地图 */
+    .map-section {
+      height: 100vh;
+      background: #F5F1EA;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 宣纸纹理效果 */
+    .map-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(185, 138, 69, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(185, 138, 69, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .map-wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 左侧信息面板 */
+    .info-panel {
+      width: 55%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-left: 100px;
+      max-width: 700px;
+    }
+
+    .scenic-image-wrapper {
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    .scenic-image {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .scenic-image.fade-out {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+
+    .scenic-info {
+      width: 80%;
+    }
+
+    .scenic-title {
+      font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: #2D2620;
+      margin: 0 0 12px 0;
+      line-height: 1.2;
+      letter-spacing: 2px;
+    }
+
+    .scenic-subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      color: #B98A45;
+      letter-spacing: 4px;
+      margin: 0 0 32px 0;
+      text-transform: uppercase;
+    }
+
+    .scenic-desc {
+      font-size: 18px;
+      line-height: 2;
+      color: #666;
+      margin: 0;
+      text-align: justify;
+    }
+
+    /* 右侧地图区域 */
+    .map-panel {
+      width: 45%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .map-vertical-title {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #4A403A;
+      letter-spacing: 8px;
+      padding: 20px 0;
+      border-left: 1px solid rgba(74, 64, 58, 0.2);
+      margin-left: 30px;
+    }
+
+    .map-container {
+      width: 90%;
+      height: 80%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .map-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .map-hotspots {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hotspot {
+      position: absolute;
+      cursor: pointer;
+      border: 2px solid rgba(185, 138, 69, 0.3);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hotspot:hover {
+      background: rgba(185, 138, 69, 0.15);
+      border-color: #B98A45;
+    }
+
+    .hotspot.active {
+      background: rgba(185, 138, 69, 0.3);
+      border-color: #B98A45;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .hotspot-circle {
+      border-radius: 50%;
+    }
+
+    .hotspot-label {
+      font-size: 12px;
+      color: #4A403A;
+      font-weight: 500;
+      padding: 4px 8px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 4px;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .hotspot:hover .hotspot-label {
+      color: #B98A45;
+      font-weight: 600;
+    }
+
+    .hotspot.active .hotspot-label {
+      color: #B98A45;
+      font-weight: 600;
+      background: #fff;
+    }
+
+    /* 呼吸动画 */
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    /* 淡入动画 */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .info-panel {
+      animation: fadeIn 0.8s ease;
+    }
+
+    .map-panel {
+      animation: fadeIn 0.8s ease 0.2s both;
+    }
+
+    @media (max-width: 1200px) {
+      .map-wrapper {
+        flex-direction: column;
+        gap: 60px;
+        text-align: center;
+      }
+
+      .map-panel {
+        width: 100%;
+      }
+
+      #xianMap {
+        max-width: 500px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .map-section {
+        padding: 60px 20px;
+      }
+
+      .info-panel {
+        width: 100%;
+      }
+
+      .info-panel img {
+        width: 100%;
+        height: 320px;
+      }
+
+      .info-panel h2 {
+        font-size: 36px;
+      }
+
+      #xianMap {
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-container">
+    <!-- 左侧悬浮导航 - 6个独立按钮 -->
+    <div class="side-nav">
+      <a href="#" class="nav-btn active">
+        <span class="nav-btn-text">首页</span>
+      </a>
+      <a href="explore.html" class="nav-btn">
+        <span class="nav-btn-text">长安漫游</span>
+      </a>
+      <a href="millennium.html" class="nav-btn">
+        <span class="nav-btn-text">长安千年</span>
+      </a>
+      <a href="changan-life.html" class="nav-btn">
+        <span class="nav-btn-text">长安烟火</span>
+      </a>
+      <a href="changan-vision.html" class="nav-btn">
+        <span class="nav-btn-text">长安视界</span>
+      </a>
+      <a href="travel-center.html" class="nav-btn">
+        <span class="nav-btn-text">出行中枢</span>
+      </a>
+    </div>
+
+    <!-- 顶部信息栏 -->
+    <nav>
+      <div class="logo">
+        <div class="logo-icon">
+          <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='长安序';">
+        </div>
+        <span class="logo-text">长安序<span class="separator">·</span><span class="city">XIAN</span></span>
+      </div>
+      
+      <div class="nav-title">
+        长安导览 <span class="title-gold">·</span> XI'AN CULTURE
+      </div>
+      
+      <div class="nav-links">
+        <a href="#disclaimer" class="nav-link">免责声明</a>
+        <a href="travel-center.html#ticket-center" class="nav-link">门票中心</a>
+      </div>
+      
+      <div class="nav-desc">
+        陕西十三朝古都文化体验平台
+      </div>
+    </nav>
+
+    <!-- Hero 主体内容 - 三栏布局 -->
+    <div class="hero-content">
+      <!-- 左侧 - 历史章节导航 -->
+      <div class="chapter-nav">
+        <ul class="chapter-list">
+          <li class="chapter-item" data-chapter="0">
+            <div class="chapter-dot"></div>
+            <div class="chapter-line"></div>
+            <div class="chapter-info">
+              <div class="chapter-title">西周丰镐</div>
+              <div class="chapter-period">约前1046-前771年</div>
+            </div>
+          </li>
+          <li class="chapter-item" data-chapter="1">
+            <div class="chapter-dot"></div>
+            <div class="chapter-line"></div>
+            <div class="chapter-info">
+              <div class="chapter-title">大秦帝国</div>
+              <div class="chapter-period">前221-前206年</div>
+            </div>
+          </li>
+          <li class="chapter-item" data-chapter="2">
+            <div class="chapter-dot"></div>
+            <div class="chapter-line"></div>
+            <div class="chapter-info">
+              <div class="chapter-title">汉唐盛世</div>
+              <div class="chapter-period">前202-220年</div>
+            </div>
+          </li>
+          <li class="chapter-item" data-chapter="3">
+            <div class="chapter-dot"></div>
+            <div class="chapter-line"></div>
+            <div class="chapter-info">
+              <div class="chapter-title">隋唐长安</div>
+              <div class="chapter-period">581-907年</div>
+            </div>
+          </li>
+          <li class="chapter-item active" data-chapter="4">
+            <div class="chapter-dot"></div>
+            <div class="chapter-line"></div>
+            <div class="chapter-info">
+              <div class="chapter-title">盛唐气象</div>
+              <div class="chapter-period">618-762年</div>
+            </div>
+          </li>
+          <li class="chapter-item" data-chapter="5">
+            <div class="chapter-dot"></div>
+            <div class="chapter-info">
+              <div class="chapter-title">明城新篇</div>
+              <div class="chapter-period">1368-1912年</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 中间 - 主标题区域 -->
+      <div class="content-center">
+        <h1 class="main-title">长安</h1>
+        <div class="main-title-en">Chang'an</div>
+        <p class="sub-title">十三朝古都 · 丝路起点</p>
+        
+        <div class="stats-container">
+          <div class="stat-item">
+            <div class="stat-number">3000+</div>
+            <div class="stat-label">建城历史</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">1100+</div>
+            <div class="stat-label">建都历史</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">13</div>
+            <div class="stat-label">建都王朝</div>
+          </div>
+        </div>
+
+        <a href="#explore" class="explore-btn">
+          <span>探索长安</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- 右侧 - 视觉展示区 -->
+      <div class="content-right">
+        <div class="hero-bg">
+          <img id="heroImage" src="https://picsum.photos/1200/800?random=1" alt="盛唐景象">
+        </div>
+        <div class="bg-overlay"></div>
+        
+        <!-- 当前章节简介 -->
+        <div class="chapter-intro">
+          <div class="chapter-intro-title" id="chapterTitle">盛唐气象</div>
+          <div class="chapter-intro-desc" id="chapterDesc">
+            盛唐时期，长安作为世界上最繁华的国际化大都市，吸引了来自世界各地的使节、商人和学者。
+            大明宫、大雁塔、曲江池等标志性建筑见证了这个辉煌时代。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部信息 -->
+    <div class="hero-footer">
+      <div class="footer-line"></div>
+      <div class="footer-info">
+        <span>中国 · 陕西 · 西安</span>
+        <span>世界历史文化名城</span>
+      </div>
+    </div>
+
+    <!-- 滚动指示 -->
+    <div class="scroll-indicator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 第二板块 - 走进长安 -->
+  <section class="explore-section" id="explore">
+    <div class="explore-container">
+      <div class="explore-header">
+        <h2 class="explore-title">走进长安</h2>
+        <p class="explore-desc">
+          赴一场千年之约。触摸历史印记，回望盛世风华，<br>
+          在一城山水与古迹间，读懂古都独有的浪漫与底蕴。
+        </p>
+      </div>
+
+      <div class="stats-wrapper">
+        <!-- 数据项 1 -->
+        <div class="stat-card">
+          <div class="stat-value">13</div>
+          <div class="stat-divider"></div>
+          <div class="stat-label">十三朝古都</div>
+        </div>
+
+        <!-- 数据项 2 -->
+        <div class="stat-card">
+          <div class="stat-value">3000+</div>
+          <div class="stat-divider"></div>
+          <div class="stat-label">建城历史</div>
+        </div>
+
+        <!-- 数据项 3 -->
+        <div class="stat-card">
+          <div class="stat-value">100+</div>
+          <div class="stat-divider"></div>
+          <div class="stat-label">重点文保单位</div>
+        </div>
+
+        <!-- 数据项 4 -->
+        <div class="stat-card">
+          <div class="stat-value">50+</div>
+          <div class="stat-divider"></div>
+          <div class="stat-label">A级景区</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第三板块 - 长安文化地图 -->
+  <section class="map-section" id="map">
+    <div class="map-wrapper">
+      <!-- 左侧信息面板 -->
+      <div class="info-panel">
+        <div class="scenic-image-wrapper">
+          <img id="scenicImage" class="scenic-image" src="城墙.jpg" alt="西安城墙">
+        </div>
+        <div class="scenic-info">
+          <h1 id="scenicTitle" class="scenic-title">西安城墙</h1>
+          <h2 id="scenicSubtitle" class="scenic-subtitle">XI'AN CITY WALL</h2>
+          <p id="scenicDesc" class="scenic-desc">中国现存规模最大、保存最完整的古代城垣，是十三朝古都西安的重要象征。城墙周长13.74公里，高12米，顶宽12-14米，底宽15-18米，是明代初年在唐长安城皇城的基础上建成的。</p>
+        </div>
+      </div>
+
+      <!-- 右侧地图区域 -->
+      <div class="map-panel">
+        <div class="map-vertical-title">长安文化地图</div>
+        <div class="map-container">
+          <!-- 地图背景图片 -->
+          <img class="map-image" src="西安市交互地图.png" alt="西安地图" onerror="this.src='https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?q=80&w=1000&auto=format&fit=crop'">
+          
+          <!-- 交互热点层 -->
+          <div class="map-hotspots">
+            <!-- 西安城墙 -->
+            <div class="hotspot active" data-id="citywall" style="left: 51%; top: 40%; width: 18%; height: 20%;">
+              <span class="hotspot-label">城墙</span>
+            </div>
+            
+            <!-- 大雁塔 -->
+            <div class="hotspot" data-id="dayanta" style="left: 52%; top: 47%; width: 14%; height: 16%;">
+              <span class="hotspot-label">大雁塔</span>
+            </div>
+            
+            <!-- 大唐不夜城 -->
+            <div class="hotspot" data-id="nightcity" style="left: 54%; top: 51%; width: 13%; height: 15%;">
+              <span class="hotspot-label">不夜城</span>
+            </div>
+            
+            <!-- 兵马俑 -->
+            <div class="hotspot" data-id="terracotta" style="left: 67%; top: 25%; width: 16%; height: 18%;">
+              <span class="hotspot-label">兵马俑</span>
+            </div>
+            
+            <!-- 华清宫 -->
+            <div class="hotspot" data-id="huaqing" style="left: 65%; top: 30%; width: 15%; height: 16%;">
+              <span class="hotspot-label">华清宫</span>
+            </div>
+            
+            <!-- 钟楼 -->
+            <div class="hotspot hotspot-circle" data-id="belltower" style="left: 58%; top: 40%; width: 36px; height: 36px;">
+              <span class="hotspot-label">钟楼</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第四板块 - 联系我们 -->
+  <section class="contact-section" id="disclaimer">
+    <div class="contact-wrapper">
+      <div class="contact-content">
+        <h2 class="contact-title">联系我们</h2>
+        <p class="contact-desc">期待与您一同探索这座千年古都的魅力</p>
+        
+        <div class="contact-info">
+          <div class="contact-item">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span class="contact-text">陕西省西安市碑林区</span>
+          </div>
+          
+          <div class="contact-item">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/>
+            </svg>
+            <span class="contact-text">contact@changan-xian.com</span>
+          </div>
+          
+          <div class="contact-item">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 5a2 2 0 0 1 2-2h3.28a1 1 0 0 1 .948.684l1.498 4.493a1 1 0 0 1-.502 1.21l-2.257 1.13a11.042 11.042 0 0 0 5.516 5.516l1.13-2.257a1 1 0 0 1 1.21-.502l4.493 1.498a1 1 0 0 1 .684.949V19a2 2 0 0 1-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+            <span class="contact-text">029-12345678</span>
+          </div>
+        </div>
+
+        <div class="social-links">
+          <a href="#" class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+            </svg>
+          </a>
+          <a href="#" class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+            </svg>
+          </a>
+          <a href="#" class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- 底部链接导航 -->
+        <div class="footer-links">
+          <a href="#" class="footer-link">关于我们</a>
+          <span class="footer-divider">|</span>
+          <a href="#" class="footer-link">Cookies政策</a>
+          <span class="footer-divider">|</span>
+          <a href="#" class="footer-link">隐私政策</a>
+          <span class="footer-divider">|</span>
+          <a href="#" class="footer-link disclaimer-link" id="disclaimerLink">免责声明</a>
+          <span class="footer-divider">|</span>
+          <a href="#" class="footer-link">网站地图</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 长安序·XIAN 西安文旅. All Rights Reserved.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 免责声明模态框 -->
+  <div class="disclaimer-modal" id="disclaimerModal">
+    <div class="disclaimer-overlay" id="disclaimerOverlay"></div>
+    <div class="disclaimer-content">
+      <div class="disclaimer-header">
+        <h2>免责声明</h2>
+        <div class="disclaimer-dates">
+          <span>更新日期：2026-06-05</span>
+          <span>生效日期：2026-06-05</span>
+        </div>
+        <button class="disclaimer-close" id="disclaimerClose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="disclaimer-body">
+        <h3>导言</h3>
+        <p>本网站致力于为全球用户提供准确、实用的西安旅游资讯与灵感。在您使用本网站之前，请仔细阅读以下免责条款。您继续使用本网站，即视为您已理解并同意接受本免责声明的全部内容。</p>
+        
+        <h3>第一条 信息仅供参考</h3>
+        <p>本网站所刊载的所有内容，包括但不限于文字、图片、视频、攻略、数据、行程建议等，均仅供用户参考之用。图片来源：<a href="https://www.vcg.com/" target="_blank">https://www.vcg.com/</a> 我们尽力确保信息的准确性与时效性，但不对信息的完整性、准确性、可靠性、适用性作任何明示或暗示的保证。用户应根据自身情况独立判断，并在出行前通过官方渠道核实重要信息（如景区开放时间、门票价格、交通状况、签证政策等）。</p>
+        
+        <h3>第二条 信息更新与变更</h3>
+        <p>旅游相关信息（如景点开放情况、运营时间、价格等）可能随时发生变更，且部分变更可能无法及时在本网站更新。因信息滞后或变更导致的任何不便或损失，本网站不承担责任。</p>
+        
+        <h3>第三条 第三方链接</h3>
+        <p>为方便用户，本网站可能包含跳转至第三方网站（如社交媒体平台、合作伙伴网站、目的地官方旅游机构等）的链接。本网站对这些第三方网站的内容、准确性、安全性、观点及其隐私政策概不负责，也不对其产品或服务承担任何保证责任。用户访问任何第三方链接的风险由其自行承担。</p>
+        
+        <h3>第四条 用户生成内容</h3>
+        <p>用户通过本网站提交的评论、游记、问答等内容，仅代表用户个人观点，不代表本网站立场。本网站不对用户生成内容的真实性、准确性、合法性承担任何责任。如用户内容侵犯他人合法权益（包括但不限于知识产权、名誉权、隐私权等），相关法律责任由用户自行承担。</p>
+        
+        <h3>第五条 网站可用性与技术问题</h3>
+        <p>本网站尽力确保服务的连续性与稳定性，但无法保证网站始终可用、不受干扰或没有错误。因网络故障、黑客攻击、计算机病毒、系统维护、不可抗力（如自然灾害、战争、政府行为等）导致的服务中断、数据丢失或任何其他损失，本网站不承担责任。</p>
+        
+        <h3>第六条 法律适用与争议解决</h3>
+        <p>本免责声明的解释、效力及争议解决，均适用中华人民共和国法律。因本网站使用产生的任何争议，双方应友好协商解决；协商不成的，任何一方均有权向本网站运营方所在地有管辖权的人民法院提起诉讼。</p>
+        
+        <h3>第七条 更新与修改</h3>
+        <p>我们保留随时修改本免责声明的权利。修改后的声明将在本页面发布，并自发布之日起生效。建议用户定期查阅本页面，以了解最新条款。</p>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* 第四板块 - 联系我们 */
+    .contact-section {
+      min-height: 100vh;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 64px;
+    }
+
+    .contact-wrapper {
+      text-align: center;
+      max-width: 800px;
+    }
+
+    .contact-title {
+      font-size: 48px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 8px;
+      margin-bottom: 24px;
+    }
+
+    .contact-desc {
+      font-size: 18px;
+      color: #9a8b7d;
+      margin-bottom: 64px;
+    }
+
+    .contact-info {
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      margin-bottom: 64px;
+    }
+
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .contact-icon {
+      width: 48px;
+      height: 48px;
+      color: #7BAF7B;
+    }
+
+    .contact-text {
+      font-size: 14px;
+      color: #9a8b7d;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+
+    .social-link {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: #7BAF7B;
+      transform: translateY(-4px);
+    }
+
+    .social-link svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .footer-bottom {
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-bottom p {
+      font-size: 12px;
+      color: #6b5b50;
+      letter-spacing: 1px;
+    }
+
+    /* 底部链接导航 */
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 40px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-link {
+      font-size: 12px;
+      color: #6b5b50;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: #7BAF7B;
+    }
+
+    .footer-divider {
+      color: #333;
+    }
+
+    /* 免责声明模态框 */
+    .disclaimer-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .disclaimer-modal.active {
+      display: block;
+    }
+
+    .disclaimer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+    }
+
+    .disclaimer-content {
+      position: relative;
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .disclaimer-header {
+      position: relative;
+      padding: 48px;
+      background: linear-gradient(135deg, #7BAF7B 0%, #5A8F5A 100%);
+      color: #fff;
+    }
+
+    .disclaimer-header h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .disclaimer-dates {
+      display: flex;
+      gap: 32px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .disclaimer-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .disclaimer-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(90deg);
+    }
+
+    .disclaimer-close svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .disclaimer-body {
+      padding: 48px;
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+
+    .disclaimer-body h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2d241c;
+      margin: 24px 0 12px;
+    }
+
+    .disclaimer-body h3:first-child {
+      margin-top: 0;
+    }
+
+    .disclaimer-body p {
+      font-size: 14px;
+      line-height: 2;
+      color: #555;
+      text-align: justify;
+    }
+
+    .disclaimer-body a {
+      color: #7BAF7B;
+      text-decoration: none;
+    }
+
+    .disclaimer-body a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .contact-section {
+        padding: 60px 20px;
+      }
+
+      .contact-title {
+        font-size: 36px;
+        letter-spacing: 4px;
+      }
+
+      .contact-info {
+        flex-direction: column;
+        gap: 40px;
+      }
+    }
+  </style>
+
+  <script>
+    // 历史章节数据
+    const chapterData = [
+      {
+        title: "西周丰镐",
+        period: "约前1046-前771年",
+        image: "西周丰镐都城.jpg",
+        desc: "西周时期，周文王和周武王在沣水两岸建立丰京和镐京，合称丰镐，是中国历史上第一个规模宏大的都城，奠定了中华文明早期都城的格局。"
+      },
+      {
+        title: "大秦帝国",
+        period: "前221-前206年",
+        image: "大秦帝国.jpg",
+        desc: "秦始皇统一六国后，在咸阳建立了中国历史上第一个统一的多民族封建国家。兵马俑、阿房宫等宏伟建筑展现了秦帝国的强大国力。"
+      },
+      {
+        title: "汉唐盛世",
+        period: "前202-220年",
+        image: "汉唐盛世.jpg",
+        desc: "汉朝时期，长安城作为丝绸之路的起点，成为东西方文化交流的中心。未央宫、建章宫等宫殿群规模宏大，彰显大汉雄风。"
+      },
+      {
+        title: "隋唐长安",
+        period: "581-907年",
+        image: "隋唐长安 .jpg",
+        desc: "隋唐时期，长安城达到了古代城市建设的巅峰，棋盘式布局影响深远。大兴城（长安城）是当时世界上最大的城市，人口超过百万。"
+      },
+      {
+        title: "盛唐气象",
+        period: "618-762年",
+        image: "盛唐气象.jpg",
+        desc: "盛唐时期，长安作为世界上最繁华的国际化大都市，吸引了来自世界各地的使节、商人和学者。大明宫、大雁塔、曲江池等标志性建筑见证了这个辉煌时代。"
+      },
+      {
+        title: "明城新篇",
+        period: "1368-1912年",
+        image: "明城新篇.jpg",
+        desc: "明代初年，在唐长安城皇城的基础上修建了西安城墙，奠定了今天西安城的格局。钟楼、鼓楼等建筑成为古城的重要标志。"
+      }
+    ];
+
+    // 章节切换功能
+    const chapterItems = document.querySelectorAll('.chapter-item');
+    const heroImage = document.getElementById('heroImage');
+    const chapterTitle = document.getElementById('chapterTitle');
+    const chapterDesc = document.getElementById('chapterDesc');
+
+    chapterItems.forEach(item => {
+      item.addEventListener('mouseenter', function() {
+        // 移除所有激活状态
+        chapterItems.forEach(i => i.classList.remove('active'));
+        
+        // 添加当前激活状态
+        this.classList.add('active');
+        
+        // 获取章节索引
+        const index = parseInt(this.dataset.chapter);
+        const data = chapterData[index];
+        
+        if (data) {
+          // 图片淡出效果
+          heroImage.style.opacity = '0';
+          
+          setTimeout(() => {
+            // 更新内容
+            heroImage.src = data.image;
+            chapterTitle.innerText = data.title;
+            chapterDesc.innerText = data.desc;
+            
+            // 图片淡入效果
+            heroImage.style.opacity = '1';
+          }, 300);
+        }
+      });
+    });
+
+    // 章节数据
+    const scenicData = {
+      citywall: {
+        title: "西安城墙",
+        subtitle: "XI'AN CITY WALL",
+        desc: "中国现存规模最大、保存最完整的古代城垣，是十三朝古都西安的重要象征。城墙周长13.74公里，高12米，顶宽12-14米，底宽15-18米，是明代初年在唐长安城皇城的基础上建成的。",
+        image: "城墙.jpg"
+      },
+      dayanta: {
+        title: "大雁塔",
+        subtitle: "GIANT WILD GOOSE PAGODA",
+        desc: "唐代佛教建筑代表，千年古塔承载着丝绸之路与东方文明的记忆。大雁塔建于唐高宗永徽三年（652年），是玄奘为保存由天竺带回的经卷佛像而主持修建的。",
+        image: "大雁塔.jpg"
+      },
+      nightcity: {
+        title: "大唐不夜城",
+        subtitle: "GRAND TANG MALL",
+        desc: "融合盛唐文化与现代灯光艺术，展现夜色中的长安盛景。位于大雁塔脚下，全长2100米，以盛唐文化为背景，以唐风元素为主线，是西安唐文化展示和体验的首选之地。",
+        image: "大唐不夜城.jpg"
+      },
+      terracotta: {
+        title: "秦始皇兵马俑",
+        subtitle: "TERRACOTTA WARRIORS",
+        desc: "世界八大奇迹之一，展现秦帝国恢弘的地下军阵。兵马俑坑位于秦始皇陵东侧，是秦始皇陵的陪葬坑，被誉为世界第八大奇迹，是中国古代辉煌文明的一张金字名片。",
+        image: "兵马俑.jpg"
+      },
+      huaqing: {
+        title: "华清宫",
+        subtitle: "HUAQING PALACE",
+        desc: "骊山脚下的皇家园林，见证千年历史与盛唐传奇。华清宫自古就是温泉游览胜地，相传西周的周幽王曾在此建离宫，唐玄宗和杨贵妃的爱情故事更使其闻名于世。",
+        image: "华清宫.jpg"
+      },
+      belltower: {
+        title: "钟楼",
+        subtitle: "BELL TOWER",
+        desc: "西安城市中心地标，连接古都东西南北的重要象征。钟楼位于西安市中心，建于明太祖朱元璋时期，是中国现存钟楼中形制最大、保存最完整的一座。",
+        image: "钟鼓楼.jpg"
+      }
+    };
+
+    const image = document.getElementById("scenicImage");
+    const title = document.getElementById("scenicTitle");
+    const subtitle = document.getElementById("scenicSubtitle");
+    const desc = document.getElementById("scenicDesc");
+
+    // 绑定地图区域点击事件
+    document.querySelectorAll("[data-id]").forEach(region => {
+      region.addEventListener("click", () => {
+        document.querySelectorAll("[data-id]").forEach(item => {
+          item.classList.remove("active");
+        });
+        region.classList.add("active");
+
+        const data = scenicData[region.dataset.id];
+        if (data) {
+          // 图片淡出
+          image.classList.add("fade-out");
+          
+          setTimeout(() => {
+            image.src = data.image;
+            title.innerText = data.title;
+            subtitle.innerText = data.subtitle;
+            desc.innerText = data.desc;
+            
+            // 图片淡入
+            image.classList.remove("fade-out");
+          }, 300);
+        }
+      });
+    });
+
+    // 平滑滚动到第二板块
+    document.querySelector('.explore-btn').addEventListener('click', function(e) {
+      e.preventDefault();
+      const exploreSection = document.getElementById('explore');
+      if (exploreSection) {
+        exploreSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+
+    // 免责声明模态框交互
+    const disclaimerModal = document.getElementById('disclaimerModal');
+    const disclaimerOverlay = document.getElementById('disclaimerOverlay');
+    const disclaimerClose = document.getElementById('disclaimerClose');
+    const disclaimerLink = document.getElementById('disclaimerLink');
+
+    // 打开模态框
+    disclaimerLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      disclaimerModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    // 关闭模态框
+    function closeDisclaimer() {
+      disclaimerModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    disclaimerClose.addEventListener('click', closeDisclaimer);
+    disclaimerOverlay.addEventListener('click', closeDisclaimer);
+
+    // ESC键关闭
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && disclaimerModal.classList.contains('active')) {
+        closeDisclaimer();
+      }
+    });
+  </script>
+</body>
+</html>

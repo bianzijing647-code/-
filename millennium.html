@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>长安序·XIAN - 长安千年</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'SimHei', 'Microsoft YaHei', sans-serif;
+      background-color: #E2D1C0;
+      color: #868166;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* 第一板块：长安千年文化解码区 */
+    .section-culture {
+      position: relative;
+      min-height: 100vh;
+      background-color: #E2D1C0;
+      overflow: hidden;
+    }
+
+    /* 背景文明年轮效果 - 超大同心圆 */
+    .bg-pattern {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 200%;
+      height: 200%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .bg-pattern::before,
+    .bg-pattern::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      border: 1px solid rgba(122, 46, 30, 0.05);
+    }
+
+    .bg-pattern::before {
+      width: 80%;
+      height: 80%;
+      transform: translate(-50%, -50%);
+    }
+
+    .bg-pattern::after {
+      width: 60%;
+      height: 60%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* 顶部返回导航 */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 15px 30px;
+      background: rgba(226, 209, 192, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(122, 46, 30, 0.1);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #7A2E1E;
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover {
+      color: #622315;
+    }
+
+    /* 顶部标题区 */
+    .section-header {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding-top: 140px;
+      padding-bottom: 60px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: headerFadeIn 1.2s ease 0.3s forwards;
+    }
+
+    @keyframes headerFadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      color: #D5B280;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+      font-size: clamp(64px, 8vw, 120px);
+      font-weight: 700;
+      color: #7A2E1E;
+      letter-spacing: 8px;
+      margin: 0 0 16px 0;
+    }
+
+    .section-lead {
+      font-size: 20px;
+      color: #868166;
+      letter-spacing: 2px;
+      margin-top: 0;
+    }
+
+    /* 主体内容区 */
+    .section-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      height: calc(100vh - 320px);
+      padding: 0 60px;
+    }
+
+    /* 左侧主视觉区 */
+    .visual-area {
+      flex: 3;
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      margin-right: 50px;
+      opacity: 0;
+      animation: visualFadeIn 1.5s ease 0.8s forwards;
+    }
+
+    @keyframes visualFadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .main-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.6s ease;
+    }
+
+    .image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(122, 46, 30, 0.1), rgba(122, 46, 30, 0.35));
+    }
+
+    /* 图片底部信息栏 */
+    .image-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px 40px;
+      background: linear-gradient(transparent, rgba(122, 46, 30, 0.3));
+    }
+
+    .info-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #7A2E1E;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .info-desc {
+      font-size: 14px;
+      color: #868166;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      text-align: justify;
+    }
+
+    /* 关键词标签 */
+    .info-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .info-tag {
+      padding: 8px 20px;
+      border: 1px solid rgba(122, 46, 30, 0.3);
+      border-radius: 30px;
+      font-size: 13px;
+      color: #7A2E1E;
+      letter-spacing: 1px;
+      background: rgba(122, 46, 30, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .info-tag:hover {
+      background: rgba(122, 46, 30, 0.15);
+      border-color: rgba(122, 46, 30, 0.5);
+    }
+
+    /* 右侧导航列表区 - 时间档案目录 */
+    .nav-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      padding: 20px 24px;
+      cursor: pointer;
+      border-radius: 16px;
+      transition: all 0.4s ease;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(122, 46, 30, 0.12);
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+
+    .nav-item:nth-child(1) { animation: navFadeIn 0.6s ease 1.2s forwards; }
+    .nav-item:nth-child(2) { animation: navFadeIn 0.6s ease 1.4s forwards; }
+    .nav-item:nth-child(3) { animation: navFadeIn 0.6s ease 1.6s forwards; }
+    .nav-item:nth-child(4) { animation: navFadeIn 0.6s ease 1.8s forwards; }
+    .nav-item:nth-child(5) { animation: navFadeIn 0.6s ease 2.0s forwards; }
+
+    @keyframes navFadeIn {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .nav-item:hover {
+      transform: translateX(8px);
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    .nav-item.active {
+      background: #D5B280;
+      transform: translateX(8px);
+      border-color: #D5B280;
+    }
+
+    .nav-item-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .nav-number {
+      font-size: 18px;
+      font-weight: 700;
+      color: #D5B280;
+      opacity: 0.8;
+      min-width: 36px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-item.active .nav-number {
+      color: #7A2E1E;
+      opacity: 1;
+    }
+
+    .nav-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #7A2E1E;
+      margin-bottom: 0;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-item.active .nav-title {
+      color: #7A2E1E;
+    }
+
+    .nav-desc {
+      font-size: 13px;
+      color: #868166;
+      margin-left: 52px;
+      line-height: 1.6;
+      transition: color 0.3s ease;
+    }
+
+    .nav-item.active .nav-desc {
+      color: #7A2E1E;
+      opacity: 0.85;
+    }
+
+    /* 底部跳转按钮 */
+    .section-footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px 0 60px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 14px 48px;
+      border: 2px solid #7A2E1E;
+      color: #7A2E1E;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: #7A2E1E;
+      color: #E2D1C0;
+      transform: scale(1.02);
+    }
+
+    /* 第二板块：西安推荐区 */
+    .section-routes {
+      position: relative;
+      min-height: 100vh;
+      background-color: #F0E5D8;
+      padding: 80px 50px;
+    }
+
+    .section-routes .section-header {
+      padding-top: 0;
+      padding-bottom: 40px;
+    }
+
+    /* 板块标题 */
+    .section-routes .section-title {
+      color: #7A2E1E;
+      font-size: 32px;
+    }
+
+    /* 卡片组标题 */
+    .card-group-title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: #5F4738;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* 卡片网格布局 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto 60px;
+    }
+
+    /* 路线卡片 */
+    .route-card {
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(122, 46, 30, 0.12);
+      box-shadow: 0 4px 12px rgba(122, 46, 30, 0.08);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .route-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(122, 46, 30, 0.15);
+    }
+
+    /* 卡片图片 */
+    .card-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    /* 卡片内容 */
+    .card-content {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #7A2E1E;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: #868166;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    /* 简介列表 */
+    .card-info {
+      margin-bottom: 15px;
+    }
+
+    .info-item {
+      font-size: 12px;
+      color: rgba(134, 129, 102, 0.75);
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(122, 46, 30, 0.1);
+      line-height: 1.4;
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+    }
+
+    .info-item span {
+      color: #D5B280;
+      margin-right: 8px;
+    }
+
+    /* 底部按钮 */
+    .card-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      background: transparent;
+      border: 1px solid #7A2E1E;
+      color: #7A2E1E;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 4px;
+    }
+
+    .card-button:hover {
+      background: rgba(122, 46, 30, 0.08);
+      color: #7A2E1E;
+    }
+
+    .card-button svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* 返回顶部按钮 */
+    .back-to-top {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      width: 50px;
+      height: 50px;
+      background: #7A2E1E;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(122, 46, 30, 0.2);
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: #622315;
+      transform: translateY(-3px);
+    }
+
+    .back-to-top svg {
+      width: 20px;
+      height: 20px;
+      color: #E2D1C0;
+    }
+
+    /* 图片放大模态框 */
+    .image-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(122, 46, 30, 0.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .image-modal.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-image {
+      max-width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(122, 46, 30, 0.4);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      border-radius: 50%;
+      color: #E2D1C0;
+      font-size: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.1);
+    }
+
+    .modal-caption {
+      text-align: center;
+      color: #E2D1C0;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <nav class="top-nav">
+    <a href="index.html" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5"/>
+        <path d="M12 19l-7-7 7-7"/>
+      </svg>
+      返回首页
+    </a>
+  </nav>
+
+  <!-- 第一板块：长安千年文化解码区 -->
+  <section class="section-culture" id="culture-section">
+    <!-- 背景装饰 -->
+    <div class="bg-pattern"></div>
+    
+    <!-- 顶部标题 -->
+    <div class="section-header">
+      <div class="section-subtitle">THIRTEEN DYNASTIES OF CHANG'AN</div>
+      <h1 class="section-title">长安千年</h1>
+      <p class="section-lead">一座城，半部中国史。</p>
+    </div>
+    
+    <!-- 主体内容 -->
+    <div class="section-content">
+      <!-- 左侧主视觉区 -->
+      <div class="visual-area">
+        <img 
+          src="中华五千年.jpg" 
+          alt="文化主题图" 
+          class="main-image" 
+          id="mainImage"
+        >
+        <div class="image-overlay"></div>
+        <div class="image-info" id="imageInfo">
+          <div class="info-title" id="infoTitle">千年史诗</div>
+          <div class="info-desc" id="infoDesc">文明根脉：西周制礼作乐，奠定华夏礼制；秦汉大一统，确立中央集权。丝路起点：汉长安出发，丝绸之路贯通中西，文明互鉴。盛唐气象：唐长安为当时世界第一都会，万国来朝，文化灿烂；唐诗五万首，半数写长安。文物活史书：兵马俑、大雁塔、大明宫、城墙等，见证王朝更迭与文化传承。</div>
+          <div class="info-tags" id="infoTags">
+            <span class="info-tag">文明根脉</span>
+            <span class="info-tag">十三朝古都</span>
+            <span class="info-tag">丝绸之路起点</span>
+            <span class="info-tag">盛唐气象</span>
+            <span class="info-tag">世界文化遗产</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右侧导航列表 - 时间档案目录 -->
+      <div class="nav-area" id="navArea">
+        <div class="nav-item active" data-index="0">
+          <div class="nav-item-header">
+            <span class="nav-number">01</span>
+            <span class="nav-title">千年史诗</span>
+          </div>
+          <div class="nav-desc">西周制礼作乐，秦汉大一统，奠定华夏文明根基</div>
+        </div>
+        
+        <div class="nav-item" data-index="1">
+          <div class="nav-item-header">
+            <span class="nav-number">02</span>
+            <span class="nav-title">十三朝时间轴</span>
+          </div>
+          <div class="nav-desc">从西周丰镐到盛唐长安，千年王朝更迭史诗</div>
+        </div>
+        
+        <div class="nav-item" data-index="2">
+          <div class="nav-item-header">
+            <span class="nav-number">03</span>
+            <span class="nav-title">丝绸之路</span>
+          </div>
+          <div class="nav-desc">汉长安出发，贯通中西文明的千年纽带</div>
+        </div>
+        
+        <div class="nav-item" data-index="3">
+          <div class="nav-item-header">
+            <span class="nav-number">04</span>
+            <span class="nav-title">盛唐文化</span>
+          </div>
+          <div class="nav-desc">万国来朝，世界第一都会的辉煌岁月</div>
+        </div>
+        
+        <div class="nav-item" data-index="4">
+          <div class="nav-item-header">
+            <span class="nav-number">05</span>
+            <span class="nav-title">长安城演变</span>
+          </div>
+          <div class="nav-desc">从华夏核心都城到现代西北中心的完整脉络</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 底部跳转按钮 -->
+    <div class="section-footer">
+      <a href="#routes-section" class="cta-button">了解更多</a>
+    </div>
+  </section>
+
+  <!-- 第二板块：西安推荐区 -->
+  <section class="section-routes" id="routes-section">
+    <div class="section-header">
+      <div class="section-subtitle">西安推荐</div>
+      <h1 class="section-title">文化瑰宝</h1>
+    </div>
+
+    <!-- 第一组：非遗艺术 -->
+    <h2 class="card-group-title">非遗艺术</h2>
+    <div class="card-grid">
+      <!-- 秦腔 -->
+      <div class="route-card">
+        <img src="秦腔.jpg" alt="秦腔" class="card-image">
+        <div class="card-content">
+          <div class="card-title">秦腔</div>
+          <div class="card-desc">黄土腔调吼古韵，西北非遗经典戏曲</div>
+          <div class="card-info">
+            <div class="info-item"><span>1.</span>唱腔：高亢粗犷，苍凉豪迈极具地域特色</div>
+            <div class="info-item"><span>2.</span>题材：多演绎历史典故、民间忠义故事</div>
+            <div class="info-item"><span>3.</span>地位：陕西本土代表性剧种，戏曲活化石</div>
+            <div class="info-item"><span>4.</span>底蕴：扎根关中民风，代代传唱千年</div>
+          </div>
+          <button class="card-button">
+            <span>SEE XI'AN</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 皮影戏 -->
+      <div class="route-card">
+        <img src="皮影戏.jpg" alt="皮影戏" class="card-image">
+        <div class="card-content">
+          <div class="card-title">皮影戏</div>
+          <div class="card-desc">灯影流转演百态，指尖光影叙古今</div>
+          <div class="card-info">
+            <div class="info-item"><span>1.</span>工艺：兽皮雕镂上色，造型精巧灵动</div>
+            <div class="info-item"><span>2.</span>表演：借灯光投影，人偶舞动演绎情节</div>
+            <div class="info-item"><span>3.</span>形式：配乐说唱结合，视听趣味十足</div>
+            <div class="info-item"><span>4.</span>传承：民间街头传统文娱，老少皆宜</div>
+          </div>
+          <button class="card-button">
+            <span>SEE XI'AN</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 剪纸 -->
+      <div class="route-card">
+        <img src="剪纸.jpg" alt="剪纸" class="card-image">
+        <div class="card-content">
+          <div class="card-title">剪纸</div>
+          <div class="card-desc">巧手裁纸凝匠心，方寸纹样藏民俗</div>
+          <div class="card-info">
+            <div class="info-item"><span>1.</span>技法：剪刻镂空结合，线条利落流畅</div>
+            <div class="info-item"><span>2.</span>纹样：花鸟瑞兽、民俗风情寓意吉祥</div>
+            <div class="info-item"><span>3.</span>用途：节庆装饰、婚嫁祈福日常陈设</div>
+            <div class="info-item"><span>4.</span>特色：质朴乡土气息，尽显关中审美</div>
+          </div>
+          <button class="card-button">
+            <span>SEE XI'AN</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 唐三彩 -->
+      <div class="route-card">
+        <img src="唐三彩.jpg" alt="唐三彩" class="card-image">
+        <div class="card-content">
+          <div class="card-title">唐三彩</div>
+          <div class="card-desc">釉色斑斓塑盛唐，陶瓷古艺传世瑰宝</div>
+          <div class="card-info">
+            <div class="info-item"><span>1.</span>材质：低温铅釉陶器，胎质古朴厚重</div>
+            <div class="info-item"><span>2.</span>色彩：黄绿白为主，釉色交融绚丽</div>
+            <div class="info-item"><span>3.</span>造型：人马器皿神像，复刻大唐风貌</div>
+            <div class="info-item"><span>4.</span>价值：唐代艺术标杆，丝路文化珍品</div>
+          </div>
+          <button class="card-button">
+            <span>SEE XI'AN</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二组：古建灵魂 -->
+    <h2 class="card-group-title">古建灵魂</h2>
+    <div class="card-grid">
+      <!-- 钟鼓楼 -->
+      <div class="route-card">
+        <img src="钟鼓楼.jpg" alt="钟鼓楼" class="card-image">
+        <div class="card-content">
+          <div class="card-title">钟鼓楼</div>
+          <div class="card-desc">关中地标古楼阁，晨钟暮鼓诉千年</div>
+          <div class="card-info">
+            <div class="info-item"><span>1.</span>形制：双层重檐攒顶，砖木经典古建样式</div>
+            <div class="info-item"><span>2.</span>功用：古时晨昏报时，管控城池作息</div>
+            <div class="info-item"><span>3.</span>风貌：雄踞城心，尽显古都恢弘气度</div>
+            <div class="info-item"><span>4.</span>底蕴：西安城市名片，见证岁月更迭</div>
+          </div>
+          <button class="card-button">
+            <span>SEE XI'AN</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 大明宫 -->
+      <div class="route-card">
+        <img src="大明宫.jpg" alt="大明宫" class="card-image">
+        <div class="card-content">
+          <div class="card-title">大明宫</div>
+          <div class="card-desc">盛唐皇家宫苑，大唐王朝权力中枢</div>
+          <div class="card-info">
+            <div class="info-item"><span>1.</span>规模：唐代规模最大宫殿建筑群</div>
+            <div class="info-item"><span>2.</span>地位：帝王理政起居，万国朝会之地</div>
+            <div class="info-item"><span>3.</span>建筑：殿宇错落恢弘，尽显盛世规制</div>
+            <div class="info-item"><span>4.</span>遗存：遗址留存，复刻盛唐宫廷气象</div>
+          </div>
+          <button class="card-button">
+            <span>SEE XI'AN</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 城墙结构 -->
+      <div class="route-card">
+        <img src="城墙.jpg" alt="城墙" class="card-image">
+        <div class="card-content">
+          <div class="card-title">城墙结构</div>
+          <div class="card-desc">巍巍城垣锁古都，砖石筑就防御壁垒</div>
+          <div class="card-info">
+            <div class="info-item"><span>1.</span>构造：砖石夯土结合，稳固耐久防御力强</div>
+            <div class="info-item"><span>2.</span>布局：合围规整，城门敌楼排布有序</div>
+            <div class="info-item"><span>3.</span>功能：古时御敌设防，守护城内民生</div>
+            <div class="info-item"><span>4.</span>风貌：环护老城，留存千年城池格局</div>
+          </div>
+          <button class="card-button">
+            <span>SEE XI'AN</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 飞檐斗拱解析 -->
+      <div class="route-card">
+        <img src="飞檐斗拱.jpg" alt="飞檐斗拱" class="card-image">
+        <div class="card-content">
+          <div class="card-title">飞檐斗拱解析</div>
+          <div class="card-desc">古建精巧木构，力学美学浑然一体</div>
+          <div class="card-info">
+            <div class="info-item"><span>1.</span>结构：榫卯拼接咬合，无需铁钉稳固承重</div>
+            <div class="info-item"><span>2.</span>造型：檐角上翘灵动，层次错落雅致美观</div>
+            <div class="info-item"><span>3.</span>作用：承重抗震，同时遮阳防雨</div>
+            <div class="info-item"><span>4.</span>特色：中式古建标志性技艺，匠心典范</div>
+          </div>
+          <button class="card-button">
+            <span>SEE XI'AN</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 24节气鼓乐 -->
+      <div class="route-card">
+        <img src="二十四节气鼓乐.jpg" alt="二十四节气鼓乐" class="card-image">
+        <div class="card-content">
+          <div class="card-title">24节气鼓乐</div>
+          <div class="card-desc">古建雅乐伴时序，鼓韵声声契合节令</div>
+          <div class="card-info">
+            <div class="info-item"><span>1.</span>渊源：依托城楼古建而生，传承千年乐韵</div>
+            <div class="info-item"><span>2.</span>节律：音律贴合二十四节气物候变化</div>
+            <div class="info-item"><span>3.</span>演绎：鼓乐奏响，兼具仪式与观赏价值</div>
+            <div class="info-item"><span>4.</span>内涵：融合农耕智慧与古都礼乐文化</div>
+          </div>
+          <button class="card-button">
+            <span>SEE XI'AN</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 返回顶部按钮 -->
+  <button class="back-to-top" id="backToTop">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 19V5"/>
+      <path d="M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <!-- 图片放大模态框 -->
+  <div class="image-modal" id="imageModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">×</button>
+      <img src="" alt="放大图片" class="modal-image" id="modalImage">
+      <div class="modal-caption" id="modalCaption"></div>
+    </div>
+  </div>
+
+  <script>
+    const navItems = [
+      {
+        title: '千年史诗',
+        desc: '文明根脉：西周制礼作乐，奠定华夏礼制；秦汉大一统，确立中央集权。丝路起点：汉长安出发，丝绸之路贯通中西，文明互鉴。盛唐气象：唐长安为当时世界第一都会，万国来朝，文化灿烂；唐诗五万首，半数写长安。文物活史书：兵马俑、大雁塔、大明宫、城墙等，见证王朝更迭与文化传承',
+        image: '中华五千年.jpg'
+      },
+      {
+        title: '十三朝时间轴',
+        desc: '从西周丰镐到盛唐长安，十三朝更迭，镌刻千年华夏文明的史诗',
+        image: '十三朝.jpg'
+      },
+      {
+        title: '丝绸之路',
+        desc: '起点：西汉长安（今西安）；开创：张骞出使西域开辟；作用：通商贸易、文化交融、物产互通；意义：东西方文明交往的千年纽带',
+        image: '丝绸之路.jpg'
+      },
+      {
+        title: '盛唐文化',
+        desc: '国力鼎盛万国来朝，长安盛景光耀古今',
+        image: '盛唐.jpg'
+      },
+      {
+        title: '长安城演变',
+        desc: '这是一座城市从华夏文明的核心都城，到现代西北中心城市的完整脉络，每一次更名都对应着王朝兴衰与时代变迁',
+        image: '长安到西安.jpg'
+      }
+    ];
+
+    // 导航点击事件
+    document.querySelectorAll('.nav-item').forEach((item, index) => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        item.classList.add('active');
+        
+        const mainImage = document.getElementById('mainImage');
+        mainImage.style.opacity = '0';
+        setTimeout(() => {
+          mainImage.src = navItems[index].image;
+          mainImage.style.opacity = '1';
+        }, 300);
+        
+        // 更新标题和描述
+        document.getElementById('infoTitle').textContent = navItems[index].title;
+        document.getElementById('infoDesc').textContent = navItems[index].desc;
+      });
+    });
+
+    // 返回顶部按钮逻辑
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 500) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // 图片放大功能
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalCaption = document.getElementById('modalCaption');
+    const modalClose = document.getElementById('modalClose');
+
+    // 为所有SEE XI'AN按钮添加点击事件
+    document.querySelectorAll('.card-button').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = button.closest('.route-card');
+        const imgSrc = card.querySelector('.card-image').src;
+        const title = card.querySelector('.card-title').textContent;
+        
+        modalImage.src = imgSrc;
+        modalCaption.textContent = title;
+        imageModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    // 关闭模态框
+    const closeModal = () => {
+      imageModal.classList.remove('show');
+      document.body.style.overflow = '';
+    };
+
+    modalClose.addEventListener('click', closeModal);
+    
+    // 点击背景关闭
+    imageModal.addEventListener('click', (e) => {
+      if (e.target === imageModal) {
+        closeModal();
+      }
+    });
+
+    // ESC键关闭
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && imageModal.classList.contains('show')) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>

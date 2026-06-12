@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>出行中枢 - 长安序·XIAN</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-dark: #1A1A1A;
+      --text-primary: #FFFFFF;
+      --text-secondary: #A0A0A0;
+      --text-muted: #666666;
+      --accent-green: #2E7D32;
+      --accent-green-hover: #1B5E20;
+      --gold: #FFD700;
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* 顶部返回导航 */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 32px;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 14px;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .back-btn:hover {
+      color: var(--accent-green);
+    }
+
+    .back-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Banner 区域 */
+    .banner-section {
+      height: 500px;
+      background: url('背景大图3.jpg') center/cover no-repeat;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background-color: #1A1A1A;
+    }
+
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 1;
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 0 20px;
+    }
+
+    .banner-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 4px;
+      line-height: 1.4;
+      margin-bottom: 40px;
+    }
+
+    .banner-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 48px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 30px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 15px;
+      letter-spacing: 2px;
+      transition: var(--transition);
+    }
+
+    .banner-btn:hover {
+      background: rgba(46, 125, 50, 0.8);
+      border-color: var(--accent-green);
+      transform: translateY(-2px);
+    }
+
+    .banner-btn svg {
+      width: 18px;
+      height: 18px;
+      color: var(--accent-green);
+    }
+
+    .banner-btn:hover svg {
+      color: var(--text-primary);
+    }
+
+    /* 底部信息区 */
+    .info-section {
+      background: var(--bg-dark);
+      padding: 60px 40px;
+    }
+
+    .info-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 1024px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 左侧品牌订阅区 */
+    .brand-section {
+      grid-column: span 1;
+    }
+
+    .brand-logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    .brand-logo .green {
+      color: var(--accent-green);
+    }
+
+    .brand-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    .subscribe-form {
+      display: flex;
+      gap: 0;
+    }
+
+    .subscribe-input {
+      flex: 1;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 25px 0 0 25px;
+      font-size: 14px;
+      outline: none;
+      background: #2A2A2A;
+      color: var(--text-primary);
+    }
+
+    .subscribe-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .subscribe-btn {
+      padding: 14px 20px;
+      background: var(--accent-green);
+      border: none;
+      border-radius: 0 25px 25px 0;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .subscribe-btn:hover {
+      background: var(--accent-green-hover);
+    }
+
+    .subscribe-btn svg {
+      width: 16px;
+      height: 16px;
+      color: #FFFFFF;
+    }
+
+    /* 中间三大功能模块 */
+    .module-section {
+      grid-column: span 3;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+    }
+
+    @media (max-width: 1024px) {
+      .module-section {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .module-section {
+        grid-column: span 1;
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .module {
+      padding: 20px;
+    }
+
+    .module-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    /* 交通指南 */
+    .transport-links {
+      list-style: none;
+    }
+
+    .transport-links li {
+      margin-bottom: 12px;
+    }
+
+    .transport-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .transport-links a:hover {
+      color: var(--accent-green);
+    }
+
+    .transport-links svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* 门票中心 */
+    .ticket-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .ticket-item {
+      text-align: center;
+    }
+
+    .ticket-qr {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      background: #2A2A2A;
+    }
+
+    .ticket-qr:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+    }
+
+    .ticket-name {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* 联系我们 */
+    .contact-info {
+      list-style: none;
+    }
+
+    .contact-info li {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contact-info li svg {
+      width: 16px;
+      height: 16px;
+      color: var(--accent-green);
+    }
+
+    .contact-info span {
+      color: var(--text-secondary);
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    .contact-info li:hover span {
+      color: var(--accent-green);
+    }
+
+    /* 底部版权与社交区 */
+    .footer-bar {
+      border-top: 1px solid #2A2A2A;
+      padding-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .copyright {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .copyright-info {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-item {
+      width: 36px;
+      height: 36px;
+      background: #2A2A2A;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .social-item:hover {
+      background: var(--accent-green);
+    }
+
+    .social-item svg {
+      width: 18px;
+      height: 18px;
+      color: var(--text-primary);
+    }
+
+    /* 二维码预览模态框 */
+    .qr-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .qr-modal.active {
+      display: flex;
+    }
+
+    .qr-content {
+      background: var(--bg-dark);
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .qr-image {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      background: #2A2A2A;
+    }
+
+    .qr-title {
+      font-size: 18px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .qr-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .qr-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .qr-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .qr-close svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <nav class="top-nav">
+    <a href="index.html" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5"/>
+        <path d="M12 19l-7-7 7-7"/>
+      </svg>
+      返回首页
+    </a>
+  </nav>
+
+  <!-- Banner 区域 -->
+  <section class="banner-section">
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+      <h1 class="banner-title">让我们一起探索西安</h1>
+      <a href="index.html" class="banner-btn">
+        <span>开始旅行</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- 底部信息区 -->
+  <section class="info-section">
+    <div class="info-container">
+      <div class="info-grid">
+        <!-- 左侧品牌订阅区 -->
+        <div class="brand-section">
+          <div class="brand-logo">
+            <span class="green">长安序</span>・XIAN
+          </div>
+          <p class="brand-desc">
+            千年文脉与人间烟火共生，十三朝厚重沉淀于城墙砖瓦，盛唐气象流转于不夜光影。一碗泡馍吃出古都性格，一眼兵马俑读懂华夏气度 —— 西安，是历史与当下最动人的对望。
+          </p>
+          <form class="subscribe-form" id="subscribeForm">
+            <input type="email" class="subscribe-input" placeholder="获取西安出行攻略" id="emailInput">
+            <button type="submit" class="subscribe-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- 中间三大功能模块 -->
+        <div class="module-section">
+          <!-- 交通指南 -->
+          <div class="module">
+            <h3 class="module-title">交通指南</h3>
+            <ul class="transport-links">
+              <li>
+                <a href="#" onclick="showModal('游玩地图')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  游玩地图
+                </a>
+              </li>
+              <li>
+                <a href="#" onclick="showModal('地铁线路图')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  地铁线路图
+                </a>
+              </li>
+              <li>
+                <a href="#" onclick="showModal('服务图标系统')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                  服务图标系统
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 门票中心 -->
+          <div class="module" id="ticket-center">
+            <h3 class="module-title">门票中心</h3>
+            <div class="ticket-grid">
+              <div class="ticket-item">
+                <img class="ticket-qr" src="秦始皇帝陵博物院.jpg" alt="兵马俑" onclick="showQRModal('兵马俑', '兵马俑景区公众号', '秦始皇帝陵博物院.jpg')">
+                <div class="ticket-name">兵马俑</div>
+              </div>
+              <div class="ticket-item">
+                <img class="ticket-qr" src="陕历博.jpg" alt="陕历博" onclick="showQRModal('陕历博', '陕西历史博物馆公众号', '陕历博.jpg')">
+                <div class="ticket-name">陕历博</div>
+              </div>
+              <div class="ticket-item">
+                <img class="ticket-qr" src="西安城墙.jpg" alt="城墙" onclick="showQRModal('城墙', '西安城墙公众号', '西安城墙.jpg')">
+                <div class="ticket-name">城墙</div>
+              </div>
+              <div class="ticket-item">
+                <img class="ticket-qr" src="大塔.jpg" alt="大雁塔" onclick="showQRModal('大雁塔', '大雁塔景区公众号', '大塔.jpg')">
+                <div class="ticket-name">大雁塔</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 联系我们 -->
+          <div class="module">
+            <h3 class="module-title">联系我们</h3>
+            <ul class="contact-info">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 5a2 2 0 0 1 2-2h3.28a1 1 0 0 1 .948.684l1.498 4.493a1 1 0 0 1-.502 1.21l-2.257 1.13a11.042 11.042 0 0 0 5.516 5.516l1.13-2.257a1 1 0 0 1 1.21-.502l4.493 1.498a1 1 0 0 1 .684.949V19a2 2 0 0 1-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                </svg>
+                <span>123 4567 7890</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                <span>1223456789@gmail.com</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 底部版权与社交区 -->
+      <div class="footer-bar">
+        <div class="copyright">© 2026 长安序·XIAN 西安文旅. All Rights Reserved.</div>
+        <div class="copyright-info">本站为非商业性非遗文化传播网站，所有图片素材来源于公开网络平台，仅用于文化展示与学术传播目的。如涉及版权或授权问题，请联系2113682122@qq.com，我们将第一时间处理。文字内容综合参考公开学术文献、政府文旅资料及非遗保护档案整理编写。</div>
+        <div class="social-links">
+          <div class="social-item" title="微信">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c4.801 0 8.692-3.287 8.692-7.343 0-4.054-3.89-7.34-8.692-7.34z"/>
+            </svg>
+          </div>
+          <div class="social-item" title="抖音">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.521.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.21 1.12 1.12 2.68 1.67 4.21 1.75-.01 1.3-.01 2.6-.02 3.91-.02 1.31.01 2.61.02 3.91-.02 1.53-.57 3.09-1.69 4.21-1.12 1.12-2.68 1.67-4.21 1.75 1.3.01 2.6.01 3.91.02 1.31-.02 2.61-.01 3.91-.02.08-1.53.63-3.09 1.75-4.21 1.12-1.12 2.68-1.67 4.21-1.75-.01-1.3-.01-2.6-.02-3.91.02-1.31-.01-2.61-.02-3.91.02-1.53.57-3.09 1.69-4.21 1.12-1.12 2.68-1.67 4.21-1.75-1.3-.01-2.6-.01-3.91-.02z"/>
+            </svg>
+          </div>
+          <div class="social-item" title="微博">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.739 5.443zM9.05 17.219c-.384.451-.858.865-1.44 1.179.141-.637.359-1.29.635-1.933.021.019.039.039.06.058.209.189.447.341.712.45.284.115.59.198.918.236.366.042.722-.014 1.051-.13a3.201 3.201 0 00-1.078-5.49c-1.379-.381-2.87.259-3.529 1.542-.326.6-.486 1.263-.461 1.926.035.858.38 1.673.953 2.276zm-.389-3.026c-.087-.303-.079-.618-.041-.926.071-.624.372-1.21.822-1.629-.085-.063-.176-.122-.271-.177-.277-.152-.572-.273-.882-.351-.336-.083-.682-.041-1.007.107-.399.188-.744.461-1.016.802-.541.662-.785 1.451-.702 2.229.085.8.52 1.504 1.185 1.971.712.509 1.55.698 2.362.612.158-.016.313-.05.462-.102-.138-.476-.442-.894-.872-1.197zm-5.586-1.762c-.014-.196-.023-.392-.023-.589 0-3.027 2.461-5.488 5.488-5.488 3.028 0 5.488 2.461 5.488 5.488 0 .197-.009.393-.023.589-.043.67-.195 1.316-.441 1.918-.21.5-.501.958-.855 1.35a.074.074 0 01-.077.014c-.032-.015-.067-.037-.097-.058-.315-.233-.603-.5-.862-.802-.576-.611-1.023-1.311-1.311-2.064-.088-.233-.17-.47-.246-.711-.162-.517-.242-1.05-.242-1.592 0-2.206-1.792-4-4-4s-4 1.794-4 4c0 .542-.08 1.075-.242 1.592-.076.241-.158.478-.246.711-.288.753-.735 1.453-1.311 2.064-.259.302-.547.569-.862.802-.03.021-.065.043-.097.058a.074.074 0 01-.077-.014c-.354-.392-.645-.85-.855-1.35-.246-.602-.398-1.248-.441-1.918zM8.661 8.561c-.032-.17-.058-.341-.077-.515.217-.024.438-.024.655 0-.019.174-.045.345-.078.515z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 二维码预览模态框 -->
+  <div class="qr-modal" id="qrModal">
+    <div class="qr-close" id="qrClose">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </div>
+    <div class="qr-content">
+      <img class="qr-image" id="qrImage" src="" alt="QR Code">
+      <div class="qr-title" id="qrTitle"></div>
+      <div class="qr-desc" id="qrDesc"></div>
+    </div>
+  </div>
+
+  <script>
+    // DOM元素
+    const subscribeForm = document.getElementById('subscribeForm');
+    const emailInput = document.getElementById('emailInput');
+    const qrModal = document.getElementById('qrModal');
+    const qrClose = document.getElementById('qrClose');
+    const qrTitle = document.getElementById('qrTitle');
+    const qrDesc = document.getElementById('qrDesc');
+    const qrImage = document.getElementById('qrImage');
+
+    // 订阅表单
+    subscribeForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      if (email) {
+        alert('订阅成功！我们会将西安出行攻略发送到您的邮箱。');
+        emailInput.value = '';
+      }
+    });
+
+    // 显示二维码模态框
+    function showQRModal(name, desc, imgSrc) {
+      qrTitle.textContent = name;
+      qrDesc.textContent = desc;
+      
+      // 解码 URL 编码的路径
+      const decodedSrc = decodeURIComponent(imgSrc);
+      
+      // 预加载图片
+      const tempImg = new Image();
+      tempImg.onload = function() {
+        qrImage.src = decodedSrc;
+        qrModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+      tempImg.onerror = function() {
+        console.error('图片加载失败:', decodedSrc);
+        // 如果加载失败，尝试不带空格的版本
+        const fallbackSrc = decodedSrc.replace('陕西历史博物馆 1.jpg', '陕西历史博物馆.jpg')
+                                  .replace('大雁塔 1.jpg', '大雁塔.jpg');
+        qrImage.src = fallbackSrc;
+        qrModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+      tempImg.src = decodedSrc;
+    }
+
+    // 关闭二维码模态框
+    qrClose.addEventListener('click', () => {
+      qrModal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    qrModal.addEventListener('click', (e) => {
+      if (e.target === qrModal) {
+        qrModal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // 显示通用模态框
+    function showModal(title) {
+      alert(`${title}页面正在建设中，敬请期待！`);
+    }
+
+    // ESC键关闭模态框
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (qrModal.classList.contains('active')) {
+          qrModal.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

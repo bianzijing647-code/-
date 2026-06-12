@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>长安序·XIAN - 长安漫游</title>
+  <style>
+    /* 全局平滑滚动 */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* 基础样式重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+      background-color: #E8E3D1;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #807A6C;
+    }
+
+    /* ==================== 第一板块：长安漫游图文板块 ==================== */
+    #explore-section {
+      min-height: 100vh;
+      padding: 80px 100px;
+      background: transparent;
+      position: relative;
+    }
+
+    /* 顶部返回导航 */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 40px;
+      background: rgba(232, 227, 209, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(129, 52, 35, 0.1);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #813423;
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      letter-spacing: 1px;
+    }
+
+    .back-btn:hover {
+      color: #6E291B;
+    }
+
+    /* 顶部标题区域 */
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+      padding-top: 40px;
+    }
+
+    .section-subtitle {
+      color: #813423;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      color: #813423;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 2;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    /* 主体内容区域 */
+    .content-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* 中间垂直时间线 */
+    .timeline {
+      position: absolute;
+      left: 50%;
+      top: 80px;
+      bottom: 80px;
+      width: 1px;
+      background-color: rgba(129, 52, 35, 0.35);
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    /* 时间线节点 */
+    .timeline-node {
+      position: absolute;
+      left: 50%;
+      width: 12px;
+      height: 12px;
+      background-color: #813423;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      border: 3px solid #E8E3D1;
+      z-index: 11;
+    }
+
+    /* 左右两列容器 */
+    .columns-wrapper {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 8%;
+      position: relative;
+    }
+
+    .left-column, .right-column {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      position: relative;
+    }
+
+    /* 内容卡片 */
+    .content-card {
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    /* 圆角矩形图片样式 */
+    .card-image {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 20px;
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 30px rgba(129, 52, 35, 0.08);
+    }
+
+    .card-image:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(129, 52, 35, 0.15);
+    }
+
+    /* 文字内容样式 */
+    .text-content {
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 20px;
+      min-height: 200px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(129, 52, 35, 0.12);
+      box-shadow: 0 4px 20px rgba(129, 52, 35, 0.08);
+    }
+
+    .text-content h3 {
+      color: #813423;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .text-content p {
+      color: #807A6C;
+      font-size: 16px;
+      line-height: 2;
+      text-align: left;
+    }
+
+    /* 节点位置定位 */
+    .node-1 { top: 0; }
+    .node-2 { top: 20%; }
+    .node-3 { top: 40%; }
+    .node-4 { top: 60%; }
+    .node-5 { top: 80%; }
+
+    /* 底部跳转按钮 */
+    .section-footer {
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .book-tour-btn {
+      display: inline-block;
+      padding: 18px 56px;
+      border: 2px solid #813423;
+      color: #813423;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      background-color: transparent;
+      transition: all 0.4s ease;
+    }
+
+    .book-tour-btn:hover {
+      background-color: #6E291B;
+      border-color: #6E291B;
+      color: #E8E3D1;
+      transform: scale(1.05);
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 900px) {
+      .columns-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 60px;
+      }
+
+      .left-column, .right-column {
+        width: 80%;
+      }
+
+      .timeline {
+        display: none;
+      }
+
+      .section-title {
+        font-size: 20px;
+      }
+    }
+
+    /* ==================== 第二板块：一日线路板块 ==================== */
+    .flow-section {
+      min-height: 100vh;
+      background: transparent;
+      padding: 80px 100px;
+      position: relative;
+    }
+
+    /* 背景图保留，增加深色遮罩 */
+    .flow-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('左侧大图.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.15;
+      z-index: 0;
+    }
+
+    .flow-section::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(232, 227, 209, 0.45);
+      z-index: 1;
+    }
+
+    /* 顶部标题区域 */
+    .flow-header {
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .flow-subtitle {
+      color: #813423;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .flow-title {
+      color: #5F4F45;
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      margin: 0;
+    }
+
+    /* 时间轴路线布局 */
+    .route-timeline {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .route-timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: rgba(129, 52, 35, 0.35);
+      transform: translateX(-50%);
+    }
+
+    .route-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 60px;
+      position: relative;
+    }
+
+    .route-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .route-item:nth-child(odd) {
+      flex-direction: row;
+    }
+
+    .route-item:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .route-time {
+      width: 120px;
+      text-align: center;
+      padding: 0 20px;
+      flex-shrink: 0;
+    }
+
+    .route-time .time-label {
+      color: #813423;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    .route-time .time-value {
+      color: #5F4F45;
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .route-content {
+      flex: 1;
+      max-width: 480px;
+      padding: 0 40px;
+    }
+
+    .route-card {
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(129, 52, 35, 0.12);
+      box-shadow: 0 4px 20px rgba(129, 52, 35, 0.08);
+      transition: all 0.4s ease;
+    }
+
+    .route-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(129, 52, 35, 0.15);
+    }
+
+    .route-card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .route-card-info {
+      padding: 32px;
+    }
+
+    .route-card-title {
+      color: #813423;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .route-card-desc {
+      color: #807A6C;
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .route-card-meta {
+      display: flex;
+      gap: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(129, 52, 35, 0.2);
+    }
+
+    .route-meta-item {
+      color: #807A6C;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    .route-meta-item span {
+      color: #813423;
+      font-weight: 600;
+    }
+
+    .route-dot {
+      position: absolute;
+      left: 50%;
+      width: 16px;
+      height: 16px;
+      background: #813423;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      border: 4px solid #E8E3D1;
+      z-index: 10;
+    }
+
+    /* 底部跳转按钮 */
+    .flow-footer {
+      text-align: center;
+      margin-top: 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .flow-cta-btn {
+      display: inline-block;
+      padding: 18px 56px;
+      border: 2px solid #813423;
+      color: #813423;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: all 0.4s ease;
+      background-color: transparent;
+    }
+
+    .flow-cta-btn:hover {
+      background-color: #813423;
+      color: #E8E3D1;
+      transform: scale(1.05);
+    }
+
+    /* ==================== 第三板块：三日线路板块 ==================== */
+    .section-three-day {
+      min-height: 100vh;
+      background: transparent;
+      padding: 80px 100px;
+      position: relative;
+    }
+
+    /* 增加极弱金色径向渐变 */
+    .section-three-day::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at center, rgba(129, 52, 35, 0.06) 0%, transparent 70%);
+      z-index: 0;
+    }
+
+    /* 顶部标题区域 */
+    .three-day-header {
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .three-day-subtitle {
+      color: #813423;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .three-day-title {
+      color: #5F4F45;
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      margin: 0;
+    }
+
+    /* 三日卡片布局 */
+    .three-day-cards {
+      display: flex;
+      gap: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .day-card {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(129, 52, 35, 0.12);
+      box-shadow: 0 4px 20px rgba(129, 52, 35, 0.08);
+      transition: all 0.4s ease;
+    }
+
+    .day-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 30px 60px rgba(129, 52, 35, 0.15);
+    }
+
+    .day-card-image {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+    }
+
+    .day-card-info {
+      padding: 40px;
+    }
+
+    .day-card-header {
+      margin-bottom: 24px;
+    }
+
+    .day-card-day {
+      color: #813423;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .day-card-title {
+      color: #5F4F45;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin: 0;
+    }
+
+    .day-card-desc {
+      color: #807A6C;
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .day-card-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(129, 52, 35, 0.2);
+    }
+
+    .day-meta-item {
+      display: flex;
+      justify-content: space-between;
+      color: #807A6C;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    .day-meta-item span {
+      color: #813423;
+      font-weight: 600;
+    }
+
+    /* 底部跳转按钮 */
+    .three-day-footer {
+      text-align: center;
+      margin-top: 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .three-day-cta-btn {
+      display: inline-block;
+      padding: 18px 56px;
+      border: 2px solid #813423;
+      color: #813423;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: all 0.4s ease;
+      background-color: transparent;
+    }
+
+    .three-day-cta-btn:hover {
+      background-color: #813423;
+      color: #E8E3D1;
+      transform: scale(1.05);
+    }
+
+    /* 淡入动画 */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 1200px) {
+      .three-day-cards {
+        flex-direction: column;
+      }
+
+      .route-item {
+        flex-direction: column !important;
+      }
+
+      .route-timeline::before {
+        display: none;
+      }
+
+      .route-dot {
+        display: none;
+      }
+
+      .route-time {
+        width: 100%;
+        padding: 20px 0;
+      }
+
+      .route-content {
+        max-width: 100%;
+        padding: 0;
+      }
+    }
+
+    /* ==================== 第四板块：景点展示轮播板块 ==================== */
+    .section-attraction {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    /* 全屏背景大图 */
+    .hero-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
+    }
+
+    .bg-image {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 0.6s ease;
+      opacity: 0.6;
+    }
+
+    .bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: transparent;
+    }
+
+    /* 左侧景点文字介绍区 */
+    .info-panel {
+      position: relative;
+      z-index: 10;
+      width: 50%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 80px 80px;
+    }
+
+    .info-content {
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 20px;
+      border: 1px solid rgba(129, 52, 35, 0.12);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-tag {
+      color: #2D241C;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .info-title {
+      font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+      font-size: 56px;
+      font-weight: 700;
+      color: #1A1510;
+      margin: 0 0 16px 0;
+      letter-spacing: 4px;
+    }
+
+    .info-subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      color: #2D241C;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin: 0 0 40px 0;
+    }
+
+    .info-text {
+      color: #3D3328;
+      font-size: 16px;
+      line-height: 2;
+      margin-bottom: 48px;
+    }
+
+    .info-text p {
+      margin: 0 0 16px 0;
+    }
+
+    .info-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-cta {
+      display: inline-block;
+      padding: 16px 48px;
+      background: transparent;
+      border: 2px solid #813423;
+      color: #813423;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+
+    .info-cta:hover {
+      background: #813423;
+      color: #E8E3D1;
+    }
+
+    /* 底部景点小方框区域 */
+    .gallery-container {
+      position: absolute;
+      bottom: 60px;
+      right: 80px;
+      z-index: 10;
+      width: 45%;
+    }
+
+    .gallery-wrapper {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 32px;
+      scrollbar-width: none;
+    }
+
+    .gallery-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+
+    .gallery-item {
+      flex-shrink: 0;
+      width: 140px;
+      height: 140px;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      border: 2px solid transparent;
+      transition: all 0.4s ease;
+    }
+
+    .gallery-item:hover {
+      border-color: rgba(129, 52, 35, 0.5);
+      transform: translateY(-8px);
+    }
+
+    .gallery-item.active {
+      border-color: #813423;
+      transform: translateY(-8px);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.4s ease;
+    }
+
+    .gallery-item:hover img,
+    .gallery-item.active img {
+      opacity: 0.7;
+    }
+
+    .gallery-item-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 12px;
+      background: linear-gradient(transparent, rgba(129, 52, 35, 0.9));
+      transition: all 0.4s ease;
+    }
+
+    .gallery-item-location {
+      font-size: 10px;
+      color: #813423;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .gallery-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #5F4F45;
+      letter-spacing: 1px;
+    }
+
+    /* 翻页控制区 */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+      justify-content: flex-end;
+    }
+
+    .nav-btn {
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(129, 52, 35, 0.3);
+      border-radius: 50%;
+      background: rgba(232, 227, 209, 0.5);
+      color: #813423;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: rgba(129, 52, 35, 0.2);
+      border-color: #813423;
+    }
+
+    .nav-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      max-width: 200px;
+      height: 2px;
+      background: rgba(129, 52, 35, 0.2);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #813423;
+      border-radius: 1px;
+      transition: width 0.4s ease;
+    }
+
+    .page-indicator {
+      font-size: 12px;
+      font-weight: 600;
+      color: #813423;
+      letter-spacing: 2px;
+      min-width: 30px;
+      text-align: right;
+    }
+
+    /* 回到顶部按钮 */
+    .back-to-top {
+      position: fixed;
+      bottom: 60px;
+      right: 30px;
+      width: 56px;
+      height: 56px;
+      border: 1px solid rgba(129, 52, 35, 0.3);
+      border-radius: 50%;
+      background: rgba(232, 227, 209, 0.8);
+      color: #813423;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.4s ease;
+      z-index: 100;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      background: rgba(129, 52, 35, 0.2);
+      border-color: #813423;
+    }
+
+    .back-to-top svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* 第四板块响应式适配 */
+    @media (max-width: 1200px) {
+      .info-panel {
+        width: 100%;
+        padding: 100px 40px 40px;
+        min-height: auto;
+      }
+
+      .gallery-container {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        width: 100%;
+        padding: 40px;
+      }
+
+      .info-title {
+        font-size: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <nav class="top-nav">
+    <a href="index.html" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5"/>
+        <path d="M12 19l-7-7 7-7"/>
+      </svg>
+      返回首页
+    </a>
+  </nav>
+
+  <!-- 第一板块：长安漫游图文板块 -->
+  <section id="explore-section">
+    <!-- 顶部标题区域 -->
+    <div class="section-header">
+      <div class="section-subtitle">CHANG'AN EXPLORER</div>
+      <div class="section-title">
+        用一天触摸千年脉搏，用三天解锁十三朝往事；<br>
+        乘夜色走入盛唐光影，着汉服化身画中行人；<br>
+        最后循着香气，把长安的味道一口口吃进记忆里。
+      </div>
+    </div>
+
+    <!-- 主体内容区域 -->
+    <div class="content-container">
+      <!-- 中间垂直时间线 -->
+      <div class="timeline">
+        <div class="timeline-node node-1"></div>
+        <div class="timeline-node node-2"></div>
+        <div class="timeline-node node-3"></div>
+        <div class="timeline-node node-4"></div>
+        <div class="timeline-node node-5"></div>
+      </div>
+
+      <!-- 左右两列内容 -->
+      <div class="columns-wrapper">
+        <!-- 左侧内容 -->
+        <div class="left-column">
+          <!-- 大尺寸圆角矩形风景图 -->
+          <div class="content-card fade-in">
+            <img src="左侧大图.jpg" alt="西安古城墙" class="card-image">
+          </div>
+
+          <!-- 小尺寸圆角矩形图 -->
+          <div class="content-card fade-in">
+            <img src="左侧小图1.jpg" alt="兵马俑" class="card-image">
+          </div>
+
+          <!-- 文字内容1 -->
+          <div class="content-card text-content fade-in">
+            <h3>HISTORY</h3>
+            <p>登钟鼓楼望千年城垣，穿回民街品市井烟火。兵马俑列阵震撼世界，陕历博珍宝诉说周秦汉唐。一日看尽长安，步步皆历史。</p>
+          </div>
+
+          <!-- 小尺寸圆角矩形图 -->
+          <div class="content-card fade-in">
+            <img src="左侧小图2.jpg" alt="大雁塔" class="card-image">
+          </div>
+
+          <!-- 文字内容2 -->
+          <div class="content-card text-content fade-in">
+            <h3>EXPERIENCE</h3>
+            <p>清晨登上古城墙骑行，午后走进兵马俑军阵。夜幕降临，大唐不夜城华灯璀璨。回民街美食与钟鼓楼夜色，构成最鲜活的西安记忆。</p>
+          </div>
+        </div>
+
+        <!-- 右侧内容 -->
+        <div class="right-column">
+          <!-- 文字内容1 -->
+          <div class="content-card text-content fade-in">
+            <h3>GASTRONOMY</h3>
+            <p>亲手掰碎馍块等待热汤浇下，腊汁肉夹于酥脆白吉馍中。一碗泡馍吃出老西安的慢节奏，一个肉夹馍咬下满口肉香。</p>
+          </div>
+
+          <!-- 小尺寸圆角矩形图 -->
+          <div class="content-card fade-in">
+            <img src="右侧小图1.jpg" alt="肉夹馍" class="card-image">
+          </div>
+
+          <!-- 文字内容2 -->
+          <div class="content-card text-content">
+            <h3>CUISINE</h3>
+            <p>宽如裤带的biangbiang面油泼香扑鼻，凉皮酸辣爽滑一扫暑气。biangbiang面里藏着关中豪迈，凉皮红油中映着夏日清凉。</p>
+          </div>
+
+          <!-- 小尺寸圆角矩形图 -->
+          <div class="content-card fade-in">
+            <img src="右侧小图2.jpg" alt="biangbiang面" class="card-image">
+          </div>
+
+          <!-- 大尺寸圆角矩形风景图 -->
+          <div class="content-card fade-in">
+            <img src="右侧大图.jpg" alt="大唐不夜城" class="card-image">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部跳转按钮 -->
+    <div class="section-footer">
+      <a href="#flow-section" class="book-tour-btn">BOOK TOUR</a>
+    </div>
+  </section>
+
+  <!-- 第二板块：一日线路板块 -->
+  <section id="flow-section" class="flow-section">
+    <!-- 顶部标题区域 -->
+    <div class="flow-header">
+      <div class="flow-subtitle">ONE DAY ROUTE</div>
+      <h2 class="flow-title">一日速览路线</h2>
+    </div>
+
+    <!-- 时间轴路线布局 -->
+    <div class="route-timeline">
+      <!-- 上午 -->
+      <div class="route-item fade-in">
+        <div class="route-dot" style="top: 50%;"></div>
+        <div class="route-time">
+          <div class="time-label">上午</div>
+          <div class="time-value">08:30</div>
+        </div>
+        <div class="route-content">
+          <div class="route-card">
+            <img src="兵马俑.jpg" alt="兵马俑" class="route-card-image">
+            <div class="route-card-info">
+              <h3 class="route-card-title">秦始皇兵马俑</h3>
+              <p class="route-card-desc">世界第八大奇迹，感受秦帝国恢弘的地下军阵，探索两千年前的大一统文明。</p>
+              <div class="route-card-meta">
+                <div class="route-meta-item">推荐停留：<span>3-4小时</span></div>
+                <div class="route-meta-item">游览时长：<span>半天</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 中午 -->
+      <div class="route-item fade-in">
+        <div class="route-dot" style="top: 50%;"></div>
+        <div class="route-time">
+          <div class="time-label">中午</div>
+          <div class="time-value">12:30</div>
+        </div>
+        <div class="route-content">
+          <div class="route-card">
+            <img src="回民街.jpg" alt="回民街" class="route-card-image">
+            <div class="route-card-info">
+              <h3 class="route-card-title">回民街美食</h3>
+              <p class="route-card-desc">品尝正宗西安美食，肉夹馍、羊肉泡馍、biangbiang面，感受市井烟火气。</p>
+              <div class="route-card-meta">
+                <div class="route-meta-item">推荐停留：<span>1-2小时</span></div>
+                <div class="route-meta-item">游览时长：<span>1小时</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 下午 -->
+      <div class="route-item fade-in">
+        <div class="route-dot" style="top: 50%;"></div>
+        <div class="route-time">
+          <div class="time-label">下午</div>
+          <div class="time-value">14:30</div>
+        </div>
+        <div class="route-content">
+          <div class="route-card">
+            <img src="城墙.jpg" alt="西安城墙" class="route-card-image">
+            <div class="route-card-info">
+              <h3 class="route-card-title">西安城墙</h3>
+              <p class="route-card-desc">中国现存规模最大、保存最完整的古代城垣，骑行城墙俯瞰古都风貌。</p>
+              <div class="route-card-meta">
+                <div class="route-meta-item">推荐停留：<span>2-3小时</span></div>
+                <div class="route-meta-item">游览时长：<span>2小时</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 晚上 -->
+      <div class="route-item fade-in">
+        <div class="route-dot" style="top: 50%;"></div>
+        <div class="route-time">
+          <div class="time-label">晚上</div>
+          <div class="time-value">18:00</div>
+        </div>
+        <div class="route-content">
+          <div class="route-card">
+            <img src="大唐不夜城.jpg" alt="大唐不夜城" class="route-card-image">
+            <div class="route-card-info">
+              <h3 class="route-card-title">大唐不夜城</h3>
+              <p class="route-card-desc">融合盛唐文化与现代灯光艺术，夜色中的长安盛景，一秒梦回大唐。</p>
+              <div class="route-card-meta">
+                <div class="route-meta-item">推荐停留：<span>2-3小时</span></div>
+                <div class="route-meta-item">游览时长：<span>2小时</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部跳转按钮 -->
+    <div class="flow-footer">
+      <a href="#three-day-section" class="flow-cta-btn">开始探索</a>
+    </div>
+  </section>
+
+  <!-- 第三板块：三日线路板块 -->
+  <section id="three-day-section" class="section-three-day">
+    <!-- 顶部标题区域 -->
+    <div class="three-day-header">
+      <div class="three-day-subtitle">THREE DAY ROUTE</div>
+      <h2 class="three-day-title">三日深度路线</h2>
+    </div>
+
+    <!-- 三日卡片布局 -->
+    <div class="three-day-cards">
+      <!-- DAY 1 -->
+      <div class="day-card fade-in">
+        <img src="兵马俑.jpg" alt="兵马俑" class="day-card-image">
+        <div class="day-card-info">
+          <div class="day-card-header">
+            <div class="day-card-day">DAY 1</div>
+            <h3 class="day-card-title">兵马俑</h3>
+          </div>
+          <p class="day-card-desc">世界第八大奇迹，秦始皇陵的陪葬坑，展现秦帝国恢弘的地下军阵。探索两千年前的大一统文明，感受历史的震撼。</p>
+          <div class="day-card-meta">
+            <div class="day-meta-item">推荐时间：<span>上午</span></div>
+            <div class="day-meta-item">游览时长：<span>3-4小时</span></div>
+            <div class="day-meta-item">最佳季节：<span>春秋两季</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 2 -->
+      <div class="day-card fade-in">
+        <img src="大唐不夜城.jpg" alt="大唐不夜城" class="day-card-image">
+        <div class="day-card-info">
+          <div class="day-card-header">
+            <div class="day-card-day">DAY 2</div>
+            <h3 class="day-card-title">大唐不夜城</h3>
+          </div>
+          <p class="day-card-desc">位于大雁塔脚下，全长2100米，以盛唐文化为背景，以唐风元素为主线。夜色中的长安盛景，一秒梦回大唐。</p>
+          <div class="day-card-meta">
+            <div class="day-meta-item">推荐时间：<span>晚上</span></div>
+            <div class="day-meta-item">游览时长：<span>2-3小时</span></div>
+            <div class="day-meta-item">最佳季节：<span>全年</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 3 -->
+      <div class="day-card fade-in">
+        <img src="陕西历史博物馆.jpg" alt="陕西历史博物馆" class="day-card-image">
+        <div class="day-card-info">
+          <div class="day-card-header">
+            <div class="day-card-day">DAY 3</div>
+            <h3 class="day-card-title">陕西历史博物馆</h3>
+          </div>
+          <p class="day-card-desc">被誉为"古都明珠，华夏宝库"，馆藏文物170余万件，从史前文明到明清，完整展现陕西历史脉络。</p>
+          <div class="day-card-meta">
+            <div class="day-meta-item">推荐时间：<span>上午</span></div>
+            <div class="day-meta-item">游览时长：<span>2-3小时</span></div>
+            <div class="day-meta-item">最佳季节：<span>全年</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部跳转按钮 -->
+    <div class="three-day-footer">
+      <a href="#attraction-section" class="three-day-cta-btn">继续探索</a>
+    </div>
+  </section>
+
+  <!-- 第四板块：西安景点展示轮播板块 -->
+  <section id="attraction-section" class="section-attraction">
+    <!-- 全屏背景大图 -->
+    <div class="hero-background">
+      <div class="bg-image" id="bgImage" style="background-image: url('https://picsum.photos/1920/1080?random=1');"></div>
+      <div class="bg-overlay"></div>
+    </div>
+
+    <!-- 左侧景点文字介绍区 -->
+    <div class="info-panel">
+      <div class="info-content" id="infoContent">
+        <div class="info-tag">XI'AN</div>
+        <h2 class="info-title">钟鼓楼</h2>
+        <div class="info-subtitle">Zhonglou & Gulou</div>
+        <div class="info-text">
+          <p>位置：紧邻回民街入口，两个景点步行只需5分钟</p>
+          <p>最佳时间：傍晚登楼，看日落+夜景亮灯</p>
+          <p>游玩时长：每个楼约30-40分钟，合计1.5小时足够</p>
+        </div>
+        <button class="info-cta">DISCOVER LOCATION</button>
+      </div>
+    </div>
+
+    <!-- 底部景点小方框区域 -->
+    <div class="gallery-container">
+      <div class="gallery-wrapper" id="galleryWrapper">
+        <div class="gallery-item active" data-index="0">
+          <img src="钟鼓楼.jpg" alt="钟鼓楼">
+          <div class="gallery-item-info">
+            <div class="gallery-item-location">西安</div>
+            <div class="gallery-item-title">钟鼓楼</div>
+          </div>
+        </div>
+        <div class="gallery-item" data-index="1">
+          <img src="城墙.jpg" alt="城墙">
+          <div class="gallery-item-info">
+            <div class="gallery-item-location">西安</div>
+            <div class="gallery-item-title">城墙</div>
+          </div>
+        </div>
+        <div class="gallery-item" data-index="2">
+          <img src="回民街.jpg" alt="回民街">
+          <div class="gallery-item-info">
+            <div class="gallery-item-location">西安</div>
+            <div class="gallery-item-title">回民街</div>
+          </div>
+        </div>
+        <div class="gallery-item" data-index="3">
+          <img src="秦始皇.jpg" alt="秦始皇">
+          <div class="gallery-item-info">
+            <div class="gallery-item-location">临潼</div>
+            <div class="gallery-item-title">秦始皇</div>
+          </div>
+        </div>
+        <div class="gallery-item" data-index="4">
+          <img src="陕西历史博物馆.jpg" alt="陕西历史博物馆">
+          <div class="gallery-item-info">
+            <div class="gallery-item-location">西安</div>
+            <div class="gallery-item-title">陕历博</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 翻页控制区 -->
+      <div class="controls">
+        <button class="nav-btn" id="prevBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="page-indicator" id="pageIndicator">01</div>
+        <button class="nav-btn" id="nextBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 回到顶部按钮 -->
+    <button class="back-to-top" id="backToTop">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 19V5"/>
+        <path d="M5 12l7-7 7 7"/>
+      </svg>
+    </button>
+  </section>
+
+  <!-- 景点数据 -->
+  <script>
+    // IntersectionObserver 实现淡入动画
+    document.addEventListener('DOMContentLoaded', function() {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, observerOptions);
+
+      // 观察所有带有 fade-in 类的元素
+      document.querySelectorAll('.fade-in').forEach(function(element) {
+        observer.observe(element);
+      });
+
+      // 景点轮播功能（第四板块）
+      var attractions = [
+        {
+          title: "钟鼓楼",
+          subtitle: "Zhonglou & Gulou",
+          image: "钟鼓楼.jpg",
+          thumbnail: "钟鼓楼.jpg",
+          content: "<p>位置：紧邻回民街入口，两个景点步行只需5分钟</p><p>最佳时间：傍晚登楼，看日落+夜景亮灯</p><p>游玩时长：每个楼约30-40分钟，合计1.5小时足够</p>"
+        },
+        {
+          title: "城墙",
+          subtitle: "City Wall",
+          image: "城墙.jpg",
+          thumbnail: "城墙.jpg",
+          content: "<p>开放时间：8:00-22:00（夜场灯光超美）</p><p>门票：成人54元，学生半价，65岁以上免费</p><p>最佳时间：傍晚17:00后登城看日落</p>"
+        },
+        {
+          title: "回民街",
+          subtitle: "Muslim Quarter",
+          image: "回民街.jpg",
+          thumbnail: "回民街.jpg",
+          content: "<p>位置：钟鼓楼旁边，逛完钟鼓楼步行即到</p><p>游玩时长：逛吃1-2小时足够</p><p>特色：西安最著名的小吃一条街</p>"
+        },
+        {
+          title: "秦始皇",
+          subtitle: "Qin Shi Huang",
+          image: "秦始皇.jpg",
+          thumbnail: "秦始皇.jpg",
+          content: "<p>地址：临潼区，距市区约40公里</p><p>门票：120元/人（含兵马俑+丽山园）</p><p>开放时间：旺季8:30-17:00，淡季8:30-16:30</p>"
+        },
+        {
+          title: "陕历博",
+          subtitle: "Shaanxi Museum",
+          image: "陕西历史博物馆.jpg",
+          thumbnail: "陕西历史博物馆.jpg",
+          content: "<p>地址：雁塔区小寨东路91号</p><p>门票：基本陈列免费，大唐遗宝展30元</p><p>开放时间：8:30-18:00，周一闭馆</p>"
+        }
+      ];
+
+      // 当前选中的景点索引
+      var currentIndex = 0;
+
+      // 景点小方框点击事件
+      var galleryItems = document.querySelectorAll('.gallery-item');
+      galleryItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+          var index = parseInt(this.dataset.index);
+          switchAttraction(index);
+        });
+      });
+
+      // 左右翻页按钮事件
+      var prevBtn = document.getElementById('prevBtn');
+      var nextBtn = document.getElementById('nextBtn');
+      
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
+          currentIndex = (currentIndex > 0) ? currentIndex - 1 : attractions.length - 1;
+          switchAttraction(currentIndex);
+        });
+      }
+      
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+          currentIndex = (currentIndex < attractions.length - 1) ? currentIndex + 1 : 0;
+          switchAttraction(currentIndex);
+        });
+      }
+
+      // 回到顶部按钮
+      var backToTop = document.getElementById('backToTop');
+      if (backToTop) {
+        backToTop.addEventListener('click', function() {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+
+        // 滚动显示回到顶部按钮
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 500) {
+            backToTop.classList.add('show');
+          } else {
+            backToTop.classList.remove('show');
+          }
+        });
+      }
+
+      // 切换景点
+      function switchAttraction(index) {
+        currentIndex = index;
+        var attraction = attractions[index];
+        
+        // 切换背景图（淡入淡出效果）
+        var bgImage = document.getElementById('bgImage');
+        if (bgImage) {
+          bgImage.style.opacity = '0';
+          setTimeout(function() {
+            bgImage.style.backgroundImage = 'url(' + attraction.image + ')';
+            bgImage.style.opacity = '1';
+          }, 300);
+        }
+
+        // 切换文字内容
+        var infoContent = document.getElementById('infoContent');
+        if (infoContent) {
+          infoContent.querySelector('.info-title').textContent = attraction.title;
+          infoContent.querySelector('.info-subtitle').textContent = attraction.subtitle;
+          infoContent.querySelector('.info-text').innerHTML = attraction.content;
+        }
+
+        // 更新选中状态
+        document.querySelectorAll('.gallery-item').forEach(function(item) {
+          item.classList.remove('active');
+        });
+        var activeItem = document.querySelector('.gallery-item[data-index="' + index + '"]');
+        if (activeItem) {
+          activeItem.classList.add('active');
+        }
+
+        // 更新进度条和页码
+        var progressFill = document.getElementById('progressFill');
+        var pageIndicator = document.getElementById('pageIndicator');
+        
+        if (progressFill) {
+          progressFill.style.width = ((index + 1) / attractions.length * 100) + '%';
+        }
+        
+        if (pageIndicator) {
+          pageIndicator.textContent = String(index + 1).padStart(2, '0');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

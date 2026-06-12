@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>长安烟火 - 长安序・XIAN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background-color: #D4C5B1;
+            color: #5F5547;
+            min-height: 100vh;
+        }
+
+        /* 顶部返回导航 */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 30px;
+            background: rgba(212, 197, 177, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(44, 34, 14, 0.1);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #2C220E;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .back-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .back-btn:hover {
+            color: #A48358;
+        }
+
+        .nav-title {
+            flex: 1;
+            text-align: center;
+            color: #2C220E;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* 主标题区 */
+        .hero-section {
+            padding: 120px 20px 60px;
+            text-align: center;
+            background: #E3D8C8;
+        }
+
+        .hero-title {
+            font-size: 42px;
+            font-weight: 800;
+            color: #2C220E;
+            letter-spacing: 8px;
+            margin-bottom: 25px;
+        }
+
+        .hero-subtitle {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 16px;
+            line-height: 1.9;
+            color: #5F5547;
+            text-align: center;
+        }
+
+        /* 分类标签栏 */
+        .category-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 30px 20px;
+            flex-wrap: wrap;
+            background: rgba(227, 216, 200, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 60px;
+            z-index: 50;
+            border-bottom: 1px solid rgba(164, 131, 88, 0.15);
+        }
+
+        .category-btn {
+            padding: 12px 28px;
+            border: 1px solid rgba(164, 131, 88, 0.3);
+            border-radius: 30px;
+            background: transparent;
+            color: #5F5547;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .category-btn:hover {
+            background: rgba(164, 131, 88, 0.08);
+            color: #A48358;
+            border-color: #A48358;
+        }
+
+        .category-btn.active {
+            background: #A48358;
+            color: #D4C5B1;
+            border-color: #A48358;
+        }
+
+        /* 卡片容器 */
+        .cards-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(164, 131, 88, 0.15);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(44, 34, 14, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(44, 34, 14, 0.12);
+            border-color: rgba(164, 131, 88, 0.3);
+        }
+
+        /* 卡片图片 */
+        .card-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 200px;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(transparent, rgba(44, 34, 14, 0.35));
+        }
+
+        /* 卡片信息区域 */
+        .card-content {
+            padding: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2C220E;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: rgba(95, 85, 71, 0.75);
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .card-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-price {
+            color: #A48358;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .card-shop {
+            color: rgba(95, 85, 71, 0.6);
+            font-size: 12px;
+        }
+
+        /* 收藏按钮 */
+        .favorite-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid #A48358;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            color: #A48358;
+        }
+
+        .favorite-btn:hover {
+            background: rgba(164, 131, 88, 0.08);
+            border-color: #A48358;
+            color: #A48358;
+            transform: scale(1.05);
+        }
+
+        .favorite-btn.active {
+            background: #2C220E;
+            color: #D4C5B1;
+            border-color: #2C220E;
+        }
+
+        .favorite-btn .star {
+            font-size: 14px;
+        }
+
+        /* 隐藏非当前分类的卡片 */
+        .card.hidden {
+            display: none;
+        }
+
+        /* 分类标题 */
+        .category-title {
+            text-align: center;
+            padding: 40px 20px 20px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #4B3A1A;
+            display: none;
+        }
+
+        .category-title.show {
+            display: block;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            .category-bar {
+                gap: 10px;
+            }
+            .category-btn {
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <nav class="top-nav">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            返回首页
+        </a>
+    </nav>
+
+    <!-- 主标题区 -->
+    <section class="hero-section">
+        <h1 class="hero-title">长安烟火</h1>
+        <p class="hero-subtitle">
+            以珍馐美馔勾勒市井风味地图，借文创雅物复刻盛唐美学基因，<br>
+            再透过方言民俗解码关中文化密码 —— 卡片轻触之间，完成从行旅记忆到文化消费的优雅转化。
+        </p>
+    </section>
+
+    <!-- 分类标签栏 -->
+    <div class="category-bar">
+        <button class="category-btn active" data-category="food">饕餮美食</button>
+        <button class="category-btn" data-category="gift">长安手礼</button>
+        <button class="category-btn" data-category="customs">关中八大怪</button>
+        <button class="category-btn" data-category="dialect">西安方言教学</button>
+        <button class="category-btn" data-category="festival">节庆习俗</button>
+        <button class="category-btn" data-category="wedding">婚俗文化</button>
+    </div>
+
+    <!-- 分类一：饕餮美食 -->
+    <h2 class="category-title show" data-title="food">饕餮美食</h2>
+    <div class="cards-container" id="food-cards">
+        <div class="card">
+            <div class="card-image-wrapper">
+                <img src="羊肉泡馍.jpg" alt="羊肉泡馍" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">羊肉泡馍</h3>
+                <p class="card-desc">西安标志性美食，汤浓肉烂，馍筋道入味</p>
+                <div class="card-info">
+                    <span class="card-price">人均 ¥20-35</span>
+                    <span class="card-shop">老孙家饭庄、同盛祥</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-image-wrapper">
+                <img src="肉夹馍.jpg" alt="肉夹馍" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">肉夹馍</h3>
+                <p class="card-desc">外皮酥脆，肉质软烂，肥瘦相间香气浓郁</p>
+                <div class="card-info">
+                    <span class="card-price">人均 ¥10-20</span>
+                    <span class="card-shop">樊记腊汁肉夹馍</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-image-wrapper">
+                <img src="凉皮.jpg" alt="凉皮" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">凉皮</h3>
+                <p class="card-desc">酸辣爽滑，筋道Q弹，夏天必吃</p>
+                <div class="card-info">
+                    <span class="card-price">人均 ¥8-15</span>
+                    <span class="card-shop">魏家凉皮</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-image-wrapper">
+                <img src="biangbiang面.jpg" alt="biangbiang面" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">biangbiang面</h3>
+                <p class="card-desc">宽如裤带，油泼辣子香扑鼻，关中特色面食</p>
+                <div class="card-info">
+                    <span class="card-price">人均 ¥15-25</span>
+                    <span class="card-shop">biangbiang面庄</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-image-wrapper">
+                <img src="水盆羊肉.jpg" alt="水盆羊肉" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">水盆羊肉</h3>
+                <p class="card-desc">汤清肉嫩，搭配月牙饼吃，暖身暖胃</p>
+                <div class="card-info">
+                    <span class="card-price">人均 ¥25-40</span>
+                    <span class="card-shop">澄城水盆羊肉</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分类二：长安手礼 -->
+    <h2 class="category-title" data-title="gift">长安手礼</h2>
+    <div class="cards-container" id="gift-cards">
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="唐三彩.jpg" alt="唐三彩" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">唐三彩</h3>
+                <p class="card-desc">复刻唐代釉陶工艺，色彩绚丽，极具收藏价值</p>
+                <div class="card-info">
+                    <span class="card-price">参考价 ¥80-300</span>
+                    <span class="card-shop">陕历博文创店</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="兵马俑文创.jpg" alt="兵马俑文创" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">兵马俑文创</h3>
+                <p class="card-desc">以兵马俑为灵感的趣味周边，小巧便携</p>
+                <div class="card-info">
+                    <span class="card-price">参考价 ¥20-100</span>
+                    <span class="card-shop">兵马俑景区文创店</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="皮影工艺.jpg" alt="皮影工艺" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">皮影工艺</h3>
+                <p class="card-desc">传统皮影雕刻工艺，可做装饰画或摆件</p>
+                <div class="card-info">
+                    <span class="card-price">参考价 ¥50-200</span>
+                    <span class="card-shop">回民街皮影店</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="国潮文创.jpg" alt="国潮文创" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">国潮设计</h3>
+                <p class="card-desc">融合长安元素的现代国潮设计，年轻有个性</p>
+                <div class="card-info">
+                    <span class="card-price">参考价 ¥30-150</span>
+                    <span class="card-shop">大唐不夜城文创店</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分类三：关中八大怪 -->
+    <h2 class="category-title" data-title="customs">关中八大怪</h2>
+    <div class="cards-container" id="customs-cards">
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="八大1.jpg" alt="八大怪1" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">面条像腰带</h3>
+                <p class="card-desc">关中特色面食，面条宽厚有嚼劲</p>
+                <div class="card-info">
+                    <span class="card-price">特色指数 ★★★★★</span>
+                    <span class="card-shop">关中民俗</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="八大2.jpg" alt="八大怪2" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">锅盔像锅盖</h3>
+                <p class="card-desc">陕西传统面食，饼大如锅盖</p>
+                <div class="card-info">
+                    <span class="card-price">特色指数 ★★★★★</span>
+                    <span class="card-shop">关中民俗</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="八大3.jpg" alt="八大怪3" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">姑娘不对外</h3>
+                <p class="card-desc">关中地区婚俗特色</p>
+                <div class="card-info">
+                    <span class="card-price">特色指数 ★★★★★</span>
+                    <span class="card-shop">关中民俗</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="八大4.jpg" alt="八大怪4" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">房子半边盖</h3>
+                <p class="card-desc">独特民居建筑风格</p>
+                <div class="card-info">
+                    <span class="card-price">特色指数 ★★★★★</span>
+                    <span class="card-shop">关中民俗</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="八大5.jpg" alt="八大怪5" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">板凳不坐蹲起来</h3>
+                <p class="card-desc">关中人的独特生活习惯</p>
+                <div class="card-info">
+                    <span class="card-price">特色指数 ★★★★★</span>
+                    <span class="card-shop">关中民俗</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="八大6.jpg" alt="八大怪6" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">帕帕头上戴</h3>
+                <p class="card-desc">传统头饰文化</p>
+                <div class="card-info">
+                    <span class="card-price">特色指数 ★★★★★</span>
+                    <span class="card-shop">关中民俗</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="八大7.jpg" alt="八大怪7" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">秦腔吼起来</h3>
+                <p class="card-desc">高亢粗犷的西北戏曲</p>
+                <div class="card-info">
+                    <span class="card-price">特色指数 ★★★★★</span>
+                    <span class="card-shop">关中民俗</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="八大8.jpg" alt="八大怪8" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">碗盆分不开</h3>
+                <p class="card-desc">大碗美食文化</p>
+                <div class="card-info">
+                    <span class="card-price">特色指数 ★★★★★</span>
+                    <span class="card-shop">关中民俗</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分类四：西安方言教学 -->
+    <h2 class="category-title" data-title="dialect">西安方言教学</h2>
+    <div class="cards-container" id="dialect-cards">
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="方言1.jpg" alt="方言1" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">谝闲传</h3>
+                <p class="card-desc">聊天、闲聊的意思，相当于"唠嗑"</p>
+                <div class="card-info">
+                    <span class="card-price">使用场景 日常社交</span>
+                    <span class="card-shop">难度 ★★☆☆☆</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="方言2.jpg" alt="方言2" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">嘹咋咧</h3>
+                <p class="card-desc">非常好、很棒的意思，表达赞美</p>
+                <div class="card-info">
+                    <span class="card-price">使用场景 表达赞美</span>
+                    <span class="card-shop">难度 ★☆☆☆☆</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="方言3.jpg" alt="方言3" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">克里马擦</h3>
+                <p class="card-desc">快点、赶紧的意思，催促用语</p>
+                <div class="card-info">
+                    <span class="card-price">使用场景 催促</span>
+                    <span class="card-shop">难度 ★★★☆☆</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="方言4.jpg" alt="方言4" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">打尖</h3>
+                <p class="card-desc">吃零食、吃东西的意思</p>
+                <div class="card-info">
+                    <span class="card-price">使用场景 饮食</span>
+                    <span class="card-shop">难度 ★★☆☆☆</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="方言5.jpg" alt="方言5" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">木乱</h3>
+                <p class="card-desc">心里不舒服、烦躁的意思</p>
+                <div class="card-info">
+                    <span class="card-price">使用场景 情绪表达</span>
+                    <span class="card-shop">难度 ★★★★☆</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="方言6.jpg" alt="方言6" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">碎碎</h3>
+                <p class="card-desc">小小的意思，"碎碎的事"就是小事</p>
+                <div class="card-info">
+                    <span class="card-price">使用场景 形容事物</span>
+                    <span class="card-shop">难度 ★☆☆☆☆</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分类五：节庆习俗 -->
+    <h2 class="category-title" data-title="festival">节庆习俗</h2>
+    <div class="cards-container" id="festival-cards">
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="节庆1.jpg" alt="节庆1" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">城墙灯会</h3>
+                <p class="card-desc">春节期间西安城墙大型灯展活动</p>
+                <div class="card-info">
+                    <span class="card-price">时间 春节期间</span>
+                    <span class="card-shop">西安城墙</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="节庆2.jpg" alt="节庆2" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">元宵社火</h3>
+                <p class="card-desc">元宵节传统民俗表演活动</p>
+                <div class="card-info">
+                    <span class="card-price">时间 元宵节</span>
+                    <span class="card-shop">各大景区</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="节庆3.jpg" alt="节庆3" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">清明祭祖</h3>
+                <p class="card-desc">清明时节的祭祀活动</p>
+                <div class="card-info">
+                    <span class="card-price">时间 清明节</span>
+                    <span class="card-shop">黄帝陵</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="节庆4.jpg" alt="节庆4" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">端午龙舟</h3>
+                <p class="card-desc">端午节传统龙舟竞赛活动</p>
+                <div class="card-info">
+                    <span class="card-price">时间 端午节</span>
+                    <span class="card-shop">浐灞湿地</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="节庆5.jpg" alt="节庆5" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">中秋月圆</h3>
+                <p class="card-desc">中秋赏月传统文化活动</p>
+                <div class="card-info">
+                    <span class="card-price">时间 中秋节</span>
+                    <span class="card-shop">大唐芙蓉园</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="节庆6.jpg" alt="节庆6" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">重阳登高</h3>
+                <p class="card-desc">重阳节登高望远传统习俗</p>
+                <div class="card-info">
+                    <span class="card-price">时间 重阳节</span>
+                    <span class="card-shop">翠华山</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分类六：婚俗文化 -->
+    <h2 class="category-title" data-title="wedding">婚俗文化</h2>
+    <div class="cards-container" id="wedding-cards">
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="婚庆1.jpg" alt="婚庆1" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">提亲下聘</h3>
+                <p class="card-desc">传统婚俗第一步，男方携礼上门提亲</p>
+                <div class="card-info">
+                    <span class="card-price">习俗 订婚</span>
+                    <span class="card-shop">传统礼仪</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="婚庆2.jpg" alt="婚庆2" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">抬花轿</h3>
+                <p class="card-desc">传统迎亲方式，热闹非凡</p>
+                <div class="card-info">
+                    <span class="card-price">习俗 迎亲</span>
+                    <span class="card-shop">热闹喜庆</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="婚庆3.jpg" alt="婚庆3" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">拜堂成亲</h3>
+                <p class="card-desc">传统婚礼核心仪式，新人拜天地</p>
+                <div class="card-info">
+                    <span class="card-price">习俗 婚礼</span>
+                    <span class="card-shop">传统仪式</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="婚庆4.jpg" alt="婚庆4" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">掀盖头</h3>
+                <p class="card-desc">新郎揭开新娘红盖头的浪漫时刻</p>
+                <div class="card-info">
+                    <span class="card-price">习俗 洞房</span>
+                    <span class="card-shop">浪漫环节</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card hidden">
+            <div class="card-image-wrapper">
+                <img src="婚庆5.jpg" alt="婚庆5" class="card-image">
+                <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">回门</h3>
+                <p class="card-desc">婚后新娘携新郎回娘家省亲</p>
+                <div class="card-info">
+                    <span class="card-price">习俗 省亲</span>
+                    <span class="card-shop">传统礼节</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-star star"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 收藏按钮切换
+        function toggleFavorite(btn) {
+            btn.classList.toggle('active');
+            const icon = btn.querySelector('.star');
+            const text = btn.querySelector('span');
+            
+            if (btn.classList.contains('active')) {
+                icon.className = 'fas fa-star star';
+                text.textContent = '已收藏';
+            } else {
+                icon.className = 'far fa-star star';
+                text.textContent = '收藏';
+            }
+        }
+
+        // 分类切换
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const categoryTitles = document.querySelectorAll('.category-title');
+        const allCards = document.querySelectorAll('.card');
+
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 更新按钮状态
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // 获取分类
+                const category = btn.dataset.category;
+
+                // 更新分类标题显示
+                categoryTitles.forEach(title => {
+                    if (title.dataset.title === category) {
+                        title.classList.add('show');
+                    } else {
+                        title.classList.remove('show');
+                    }
+                });
+
+                // 更新卡片显示
+                allCards.forEach(card => {
+                    const cardContainer = card.closest('.cards-container');
+                    const cardCategory = cardContainer.id.replace('-cards', '');
+                    
+                    if (cardCategory === category) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
