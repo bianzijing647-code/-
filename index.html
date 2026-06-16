@@ -1147,7 +1147,7 @@
       <!-- 右侧 - 视觉展示区 -->
       <div class="content-right">
         <div class="hero-bg">
-          <img id="heroImage" src="https://picsum.photos/1200/800?random=1" alt="盛唐景象">
+          <img id="heroImage" src="盛唐气象.jpg" alt="盛唐景象">
         </div>
         <div class="bg-overlay"></div>
         
@@ -1709,7 +1709,7 @@
         
         if (data) {
           // 图片淡出效果
-          heroImage.style.opacity = '0';
+          heroImage.classList.add('fade-out');
           
           setTimeout(() => {
             // 更新内容
@@ -1718,7 +1718,7 @@
             chapterDesc.innerText = data.desc;
             
             // 图片淡入效果
-            heroImage.style.opacity = '1';
+            heroImage.classList.remove('fade-out');
           }, 300);
         }
       });
